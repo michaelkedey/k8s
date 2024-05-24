@@ -1,0 +1,79 @@
+# Global configurations
+replicas: 3
+env: dev
+secrets:
+  db:
+    user: postgres
+    password: postgres
+
+# Deployment configurations
+deploy:
+  db:
+    name: db
+    image: postgres:15-alpine
+    port: 5432
+    volumeMounts:
+      mountPath: /var/lib/postgresql/data
+      name: db-data
+    volume:
+      name: db-data
+
+  redis:
+    name: redis
+    image: redis:alpine
+    port: 6379
+    volumeMounts:
+      mountPath: /data
+      name: redis-data
+    volume:
+      name: redis-data
+
+  result:
+    name: result
+    image: michaelkedey/vote:result-app
+    port: 80
+
+  vote:
+    name: vote
+    image: michaelkedey/vote:vote-app
+    port: 80
+
+  worker:
+    name: worker
+    image: dockersamples/examplevotingapp_worker:latest
+
+# Service configurations
+svc:
+  db:
+    name: db-svc
+    ports:
+      name: db-svc
+      port: 5432
+      targetPort: 5432
+    type: ClusterIP
+
+  redis:
+    name: redis-svc
+    ports:
+      name: redis-svc
+      port: 6379
+      targetPort: 6379
+    type: ClusterIP
+
+  result:
+    name: result-svc
+    ports:
+      name: result-svc
+      port: 5051
+      targetPort: 80
+      nodePort: 31051
+    type: NodePort
+
+  vote:
+    name: vote-svc
+    ports:
+      name: vote-svc
+      port: 5050
+      targetPort: 80
+      nodePort: 31050
+    type: NodePort
