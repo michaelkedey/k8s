@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .Values.deploy.worker.name }}-{{ include "app" . }}
+  name: {{ .Values.deploy.worker.name }}-{{ include "app" . }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deploy.worker.name }}-{{ include "app" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deploy.worker.name }}-{{ include "app" . }}
+    spec:
+      containers:
+      - image: {{ .Values.deploy.worker.image }}
+        name: {{ .Values.deploy.worker.name }}

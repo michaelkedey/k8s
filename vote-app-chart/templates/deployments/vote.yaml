@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .Values.deploy.vote.name }}-{{ include "app" . }}
+  name: {{ .Values.deploy.vote.name }}-{{ include "app" . }}
+spec:
+  replicas: {{ .Values.replica }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deploy.vote.name }}-{{ include "app" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deploy.vote.name }}-{{ include "app" . }}
+    spec:
+      containers:
+      - image: {{ .Values.deploy.vote.image }}
+        name: {{ .Values.deploy.vote.name }}-{{ include "app" . }}
+        ports:
+        - containerPort: {{ .Values.deploy.vote.port }}
+          name: {{ .Values.deploy.vote.name}}

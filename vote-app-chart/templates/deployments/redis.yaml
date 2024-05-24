@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .Values.deploy.redis.name }}-{{ include "app" . }}
+  name: {{ .Values.deploy.redis.name }}-{{ include "app" . }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deploy.redis.name }}-{{ include "app" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deploy.redis.name }}-{{ include "app" . }}
+    spec:
+      containers:
+        - image: {{ .Values.deploy.redis.image }}
+          name: {{ .Values.deploy.redis.name }}
+          ports:
+            - containerPort: {{ .Values.deploy.redis.port }}
+              name: {{ .Values.deploy.redis.name }}
+          volumeMounts:
+            - mountPath: {{ .Values.deploy.redis.volumeMounts.mountPath }}
+              name: {{ .Values.deploy.redis.volumeMounts.name }}
+      volumes:
+        - name: {{ .Values.deploy.redis.volume.name }}
+          emptyDir: {}

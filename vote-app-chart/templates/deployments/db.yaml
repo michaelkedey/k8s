@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .Values.deploy.db.name }}-{{ include "app" . }}
+  name: {{ .Values.deploy.db.name }}-{{ include "app" . }}
+spec:
+  replicas: {{ .Values.replica }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deploy.db.name }}-{{ include "app" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deploy.db.name }}-{{ include "app" . }}
+    spec:
+      containers:
+        - image: {{ .Values.deploy.db.image }}
+          name: {{ .Values.deploy.db.name }}-{{ include "app" . }}
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret-{{ include "app" . }}
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret-{{ include "app" . }}
+                  key: POSTGRES_PASSWORD
+          ports:
+            - containerPort: {{ .Values.deploy.db.port }}
+              name: {{ .Values.deploy.db.name }}
+          volumeMounts:
+            - mountPath: {{ .Values.deploy.db.volumeMounts.mountPath }}
+              name: {{ .Values.deploy.db.volumeMounts.name }}
+      volumes:
+        - name: {{ .Values.deploy.db.volume.name }}
+          emptyDir: {}

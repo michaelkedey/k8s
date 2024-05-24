@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{ .Values.deploy.result.name }}-{{ include "app" . }}
+  name: {{ .Values.svc.result.name }}-{{ include "app" . }}
+spec:
+  type: {{ .Values.svc.result.type }}
+  ports:
+  - name: {{ .Values.svc.result.name }}
+    port: {{ .Values.svc.result.ports.port }}
+    targetPort: {{ .Values.svc.result.ports.targetPort }}
+    nodePort: {{ .Values.svc.result.ports.nodePort }}
+  selector:
+    app: {{ .Values.deploy.result.name }}-{{ include "app" . }}
