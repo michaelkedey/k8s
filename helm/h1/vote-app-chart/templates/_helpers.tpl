@@ -1,3 +1,4 @@
+# releaseName and chartName
 {{- define "app" -}}
 {{- printf "%s-%s" .Release.Name .Chart.Name -}}
 {{- end -}}

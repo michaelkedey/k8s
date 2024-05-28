@@ -1,4 +1,12 @@
 # Global configurations
+# basePorts:
+#   vote:
+#     nodePort: 31000
+#   result:
+#     nodePort: 31001
+# serviceOffsets:
+#   result: 0
+#   vote: 1
 replicas: 2
 env: dev
 secrets:

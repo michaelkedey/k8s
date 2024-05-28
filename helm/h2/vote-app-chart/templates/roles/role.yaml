@@ -1,0 +1,19 @@
+# templates/role.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: vote-roles
+rules:
+- apiGroups: [""]  # Core API group
+  resources: ["pods"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""] 
+  resources: ["services"] 
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""] 
+  resources: ["persistentvolumes"] 
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""] 
+  resources: ["deployments"] 
+  verbs: ["get", "list", "watch"]
+
