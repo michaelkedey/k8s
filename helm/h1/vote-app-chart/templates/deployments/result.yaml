@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: {{ .Values.deploy.result.name }}-{{ include "app" . }}
+    app: {{ include "app" . }}
   name: {{ .Values.deploy.result.name }}-{{ include "app" . }}
 spec:
   replicas: 1
@@ -20,4 +20,5 @@ spec:
         ports:
         - containerPort: {{ .Values.deploy.result.port }}
           name: {{ .Values.deploy.result.name }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}-{{ include "app" . }}
 

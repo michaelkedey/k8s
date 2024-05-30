@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.pvc.db.name }}-{{ include "app" . }}
+  labels:
+    app: {{ include "app" . }}
+spec:
+  accessModes: 
+    - {{ .Values.pvc.db.accessModes }}
+  resources:
+    requests:
+      storage: {{ .Values.pvc.db.storage }}
+  storageClassName: {{ .Values.pvc.db.storageClassName }}
+  volumeName: {{ .Values.volumes.db.name }}-{{ include "app" . }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.pvc.redis.name }}-{{ include "app" . }}
+  labels:
+    app: {{ include "app" . }}
+spec:
+  accessModes: 
+    - {{ .Values.pvc.redis.accessModes }}
+  resources:
+    requests:
+      storage: {{ .Values.pvc.redis.storage }}
+  storageClassName: {{ .Values.pvc.redis.storageClassName }}
+  volumeName: {{ .Values.volumes.redis.name }}-{{ include "app" . }}
+

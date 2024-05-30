@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: {{ .Values.deploy.redis.name }}-{{ include "app" . }}
+    app: {{ include "app" . }}
   name: {{ .Values.deploy.redis.name }}-{{ include "app" . }}
 spec:
   replicas: {{ .Values.replicas }}
@@ -23,6 +23,8 @@ spec:
           volumeMounts:
             - mountPath: {{ .Values.deploy.redis.volumeMounts.mountPath }}
               name: {{ .Values.deploy.redis.volumeMounts.name }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}-{{ include "app" . }}
       volumes:
         - name: {{ .Values.deploy.redis.volume.name }}
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: {{ .Values.pvc.redis.name }}-{{ include "app" . }}

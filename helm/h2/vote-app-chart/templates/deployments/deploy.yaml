@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: {{ .Values.deploy.db.name }}-{{ include "app" . }}
+    app: {{ include "app" . }}
   name: {{ .Values.deploy.db.name }}-{{ include "app" . }}
 spec:
   replicas: {{ .Values.replica }}
@@ -21,12 +21,12 @@ spec:
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: db-secret-{{ include "app" . }}
+                  name: {{ .Values.secrets.name }}-{{ include "app" . }}
                   key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: db-secret-{{ include "app" . }}
+                  name: {{ .Values.secrets.name }}-{{ include "app" . }}
                   key: POSTGRES_PASSWORD
           ports:
             - containerPort: {{ .Values.deploy.db.port }}
@@ -34,15 +34,17 @@ spec:
           volumeMounts:
             - mountPath: {{ .Values.deploy.db.volumeMounts.mountPath }}
               name: {{ .Values.deploy.db.volumeMounts.name }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}-{{ include "app" . }}
       volumes:
         - name: {{ .Values.deploy.db.volume.name }}
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: {{ .Values.pvc.db.name }}-{{ include "app" . }}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: {{ .Values.deploy.redis.name }}-{{ include "app" . }}
+    app: {{ include "app" . }}
   name: {{ .Values.deploy.redis.name }}-{{ include "app" . }}
 spec:
   replicas: {{ .Values.replicas }}
@@ -63,18 +65,20 @@ spec:
           volumeMounts:
             - mountPath: {{ .Values.deploy.redis.volumeMounts.mountPath }}
               name: {{ .Values.deploy.redis.volumeMounts.name }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}-{{ include "app" . }}
       volumes:
         - name: {{ .Values.deploy.redis.volume.name }}
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: {{ .Values.pvc.redis.name }}-{{ include "app" . }}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: {{ .Values.deploy.result.name }}-{{ include "app" . }}
+    app: {{ include "app" . }}
   name: {{ .Values.deploy.result.name }}-{{ include "app" . }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replica }}
   selector:
     matchLabels:
       app: {{ .Values.deploy.result.name }}-{{ include "app" . }}
@@ -89,12 +93,13 @@ spec:
         ports:
         - containerPort: {{ .Values.deploy.result.port }}
           name: {{ .Values.deploy.result.name }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}-{{ include "app" . }}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: {{ .Values.deploy.vote.name }}-{{ include "app" . }}
+    app: {{ include "app" . }}
   name: {{ .Values.deploy.vote.name }}-{{ include "app" . }}
 spec:
   replicas: {{ .Values.replica }}
@@ -112,12 +117,13 @@ spec:
         ports:
         - containerPort: {{ .Values.deploy.vote.port }}
           name: {{ .Values.deploy.vote.name}}
+      serviceAccountName: {{ .Values.serviceAccount.name }}-{{ include "app" . }}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: {{ .Values.deploy.worker.name }}-{{ include "app" . }}
+    app: {{ include "app" . }}
   name: {{ .Values.deploy.worker.name }}-{{ include "app" . }}
 spec:
   replicas: {{ .Values.replicas }}
@@ -132,3 +138,4 @@ spec:
       containers:
       - image: {{ .Values.deploy.worker.image }}
         name: {{ .Values.deploy.worker.name }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}-{{ include "app" . }}

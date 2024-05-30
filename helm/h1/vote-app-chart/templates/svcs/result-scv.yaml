@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: {{ .Values.deploy.result.name }}-{{ include "app" . }}
+    app: {{ include "app" . }}
   name: {{ .Values.svc.result.name }}-{{ include "app" . }}
 spec:
   type: {{ .Values.svc.result.type }}

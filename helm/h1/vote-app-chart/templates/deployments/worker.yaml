@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: {{ .Values.deploy.worker.name }}-{{ include "app" . }}
+    app: {{ include "app" . }}
   name: {{ .Values.deploy.worker.name }}-{{ include "app" . }}
 spec:
   replicas: {{ .Values.replicas }}
@@ -17,3 +17,4 @@ spec:
       containers:
       - image: {{ .Values.deploy.worker.image }}
         name: {{ .Values.deploy.worker.name }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}-{{ include "app" . }}

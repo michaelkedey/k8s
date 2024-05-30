@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: {{ .Values.deploy.vote.name }}-{{ include "app" . }}
+    app: {{ include "app" . }}
   name: {{ .Values.deploy.vote.name }}-{{ include "app" . }}
 spec:
   replicas: {{ .Values.replica }}
@@ -20,3 +20,4 @@ spec:
         ports:
         - containerPort: {{ .Values.deploy.vote.port }}
           name: {{ .Values.deploy.vote.name}}
+      serviceAccountName: {{ .Values.serviceAccount.name }}-{{ include "app" . }}

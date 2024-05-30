@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.pvc.redis.name }}-{{ include "app" . }}
+  labels:
+    app: {{ include "app" . }}
+spec:
+  accessModes: 
+    - {{ .Values.pvc.redis.accessModes }}
+  resources:
+    requests:
+      storage: {{ .Values.pvc.redis.storage }}
+  storageClassName: {{ .Values.pvc.redis.storageClassName }}
+  volumeName: {{ .Values.volumes.redis.name }}-{{ include "app" . }}
+

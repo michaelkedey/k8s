@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: {{ .Values.deploy.db.name }}-{{ include "app" . }}
+    app: {{ include "app" . }}
   name: {{ .Values.deploy.db.name }}-{{ include "app" . }}
 spec:
   replicas: {{ .Values.replica }}
@@ -21,12 +21,12 @@ spec:
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: db-secret-{{ include "app" . }}
+                  name: {{ .Values.secrets.name }}-{{ include "app" . }}
                   key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: db-secret-{{ include "app" . }}
+                  name: {{ .Values.secrets.name }}-{{ include "app" . }}
                   key: POSTGRES_PASSWORD
           ports:
             - containerPort: {{ .Values.deploy.db.port }}
@@ -34,6 +34,8 @@ spec:
           volumeMounts:
             - mountPath: {{ .Values.deploy.db.volumeMounts.mountPath }}
               name: {{ .Values.deploy.db.volumeMounts.name }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}-{{ include "app" . }}
       volumes:
         - name: {{ .Values.deploy.db.volume.name }}
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: {{ .Values.pvc.db.name }}-{{ include "app" . }}
