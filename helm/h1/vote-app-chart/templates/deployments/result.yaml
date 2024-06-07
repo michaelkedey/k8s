@@ -5,7 +5,7 @@ metadata:
     app: {{ include "app" . }}
   name: {{ .Values.deploy.result.name }}-{{ include "app" . }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
       app: {{ .Values.deploy.result.name }}-{{ include "app" . }}

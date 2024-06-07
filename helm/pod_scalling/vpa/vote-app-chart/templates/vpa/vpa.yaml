@@ -1,0 +1,113 @@
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: {{ .Values.vpa.db.name }}-{{ include "app" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind: Deployment
+    name: {{ .Values.deploy.db.name }}-{{ include "app" . }}
+  updatePolicy:
+    updateMode: "Auto"
+  resourcePolicy:
+    containerPolicies:
+      - containerName: {{ .Values.deploy.db.name }}-{{ include "app" . }}
+        minAllowed:
+          cpu: {{ .Values.vpa.db.metrics.cpu.min }}
+          memory: {{ .Values.vpa.db.metrics.memory.min }}
+        maxAllowed:
+          cpu: {{ .Values.vpa.db.metrics.cpu.max }}
+          memory: {{ .Values.vpa.db.metrics.memory.max }}
+
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: {{ .Values.vpa.redis.name }}-{{ include "app" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind: Deployment
+    name: {{ .Values.deploy.redis.name }}-{{ include "app" . }}
+  updatePolicy:
+    updateMode: "Auto"
+  resourcePolicy:
+    containerPolicies:
+      - containerName: {{ .Values.deploy.redis.name }}-{{ include "app" . }}
+        minAllowed:
+          cpu: {{ .Values.vpa.redis.metrics.cpu.min }}
+          memory: {{ .Values.vpa.redis.metrics.memory.min }}
+        maxAllowed:
+          cpu: {{ .Values.vpa.redis.metrics.cpu.max }}
+          memory: {{ .Values.vpa.redis.metrics.memory.max }}
+
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: {{ .Values.vpa.result.name }}-{{ include "app" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind: Deployment
+    name: {{ .Values.deploy.result.name }}-{{ include "app" . }}
+  updatePolicy:
+    updateMode: "Auto"
+  resourcePolicy:
+    containerPolicies:
+      - containerName: {{ .Values.deploy.result.name }}-{{ include "app" . }}
+        minAllowed:
+          cpu: {{ .Values.vpa.result.metrics.cpu.min }}
+          memory: {{ .Values.vpa.result.metrics.memory.min }}
+        maxAllowed:
+          cpu: {{ .Values.vpa.result.metrics.cpu.max }}
+          memory: {{ .Values.vpa.result.metrics.memory.max }}
+
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: {{ .Values.vpa.vote.name }}-{{ include "app" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind: Deployment
+    name: {{ .Values.deploy.vote.name }}-{{ include "app" . }}
+  updatePolicy:
+    updateMode: "Auto"
+  resourcePolicy:
+    containerPolicies:
+      - containerName: {{ .Values.deploy.vote.name }}-{{ include "app" . }}
+        minAllowed:
+          cpu: {{ .Values.vpa.vote.metrics.cpu.min }}
+          memory: {{ .Values.vpa.vote.metrics.memory.min }}
+        maxAllowed:
+          cpu: {{ .Values.vpa.vote.metrics.cpu.max }}
+          memory: {{ .Values.vpa.vote.metrics.memory.max }}
+
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: {{ .Values.vpa.worker.name }}-{{ include "app" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind: Deployment
+    name: {{ .Values.deploy.worker.name }}-{{ include "app" . }}
+  updatePolicy:
+    updateMode: "Auto"
+  resourcePolicy:
+    containerPolicies:
+      - containerName: {{ .Values.deploy.worker.name }}-{{ include "app" . }}
+        minAllowed:
+          cpu: {{ .Values.vpa.worker.metrics.cpu.min }}
+          memory: {{ .Values.vpa.worker.metrics.memory.min }}
+        maxAllowed:
+          cpu: {{ .Values.vpa.worker.metrics.cpu.max }}
+          memory: {{ .Values.vpa.worker.metrics.memory.max }}

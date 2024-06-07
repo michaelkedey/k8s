@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Values.serviceAccount.name }}-{{ include "app" . }}
+  labels:
+    app: {{ include "app" . }}
+  namespace: {{ .Release.Namespace }}  # Inherit namespace from Helm release

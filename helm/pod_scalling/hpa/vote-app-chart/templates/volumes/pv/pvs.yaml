@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.volumes.db.name }}-{{ include "app" . }}
+  labels:
+    app: {{ include "app" . }}
+spec:
+  capacity:
+    storage: {{ .Values.volumes.db.storage }}
+  accessModes: 
+    - {{ .Values.volumes.db.accessModes}} 
+  persistentVolumeReclaimPolicy: {{ .Values.volumes.db.pvreclaimpolicy}}
+  storageClassName: {{ .Values.volumes.db.storageClassName}}
+  hostPath:
+    path: {{ .Values.volumes.db.path }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.volumes.redis.name }}-{{ include "app" . }}
+  labels:
+    app: {{ include "app" . }}
+spec:
+  capacity:
+    storage: {{ .Values.volumes.redis.storage }}
+  accessModes: 
+    - {{ .Values.volumes.redis.accessModes }} 
+  persistentVolumeReclaimPolicy: {{ .Values.volumes.redis.pvreclaimpolicy }}
+  storageClassName: {{ .Values.volumes.redis.storageClassName }}
+  hostPath:
+    path: {{ .Values.volumes.redis.path }}
