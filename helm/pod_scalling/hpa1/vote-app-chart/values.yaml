@@ -11,10 +11,6 @@
 # Memory Utilization = (Used Memory) / (Total Memory) * 100%
 # Memory Utilization = (4 GB) / (16 GB) * 100% = 25%
 
-roles:
-  - backend
-  - frontend
-  
 hpa:
   db:
     name: db-hpa
@@ -56,9 +52,6 @@ hpa:
       type: cpu
       target: Utilization
       average: 40
-  roles:
-    core: backend
-    secondary: frontend
 
 vpa:
   db:

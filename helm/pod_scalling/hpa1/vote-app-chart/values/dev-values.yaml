@@ -7,106 +7,6 @@
 # serviceOffsets:
 #   result: 0
 #   vote: 1
-
-# Memory Utilization = (Used Memory) / (Total Memory) * 100%
-# Memory Utilization = (4 GB) / (16 GB) * 100% = 25%
-
-roles:
-  - backend
-  - frontend
-  
-hpa:
-  db:
-    name: db-hpa
-    min: 2
-    max: 4
-    metrics:
-      type: memory
-      target: Utilization
-      average: 40
-  redis:
-    name: redis-hpa
-    min: 2
-    max: 4
-    metrics:
-      type: memory
-      target: Utilization
-      average: 50
-  result:
-    name: result-hpa
-    min: 2
-    max: 4
-    metrics:
-      type: cpu
-      target: Utilization
-      average: 50
-  vote:
-    name: vote-hpa
-    min: 2
-    max: 4
-    metrics:
-      type: cpu
-      target: Utilization
-      average: 50
-  worker:
-    name: db-hpa
-    min: 3
-    max: 5
-    metrics:
-      type: cpu
-      target: Utilization
-      average: 40
-  roles:
-    core: backend
-    secondary: frontend
-
-vpa:
-  db:
-    name: db-vpa
-    metrics:
-      cpu: 
-        min: "100m"
-        max: "1000m"
-      memory: 
-        min: "256Mi"
-        max: "2Gi"
-  redis:
-    name: redis-vpa
-    metrics:
-      cpu: 
-        min: "100m"
-        max: "1000m"
-      memory: 
-        min: "256Mi"
-        max: "2Gi"
-  result:
-    name: result-vpa
-    metrics:
-      cpu: 
-        min: "100m"
-        max: "1000m"
-      memory: 
-        min: "256Mi"
-        max: "2Gi"
-  vote:
-    name: vote-vpa
-    metrics:
-      cpu: 
-        min: "100m"
-        max: "1000m"
-      memory: 
-        min: "256Mi"
-        max: "2Gi"
-  worker:
-    name: worker-vpa
-    metrics:
-      cpu: 
-        min: "100m"
-        max: "1000m"
-      memory: 
-        min: "256Mi"
-        max: "2Gi"
-        
 roles:
   name: all-access-role
   resources:
@@ -153,7 +53,7 @@ pvc:
 serviceAccount:
   name: all-access-sa
 
-replicas: 1
+replicas: 2
 env: dev
 secrets:
   name: db-secret
@@ -227,17 +127,17 @@ svc:
     name: result-svc
     ports:
       name: result-svc
-      port: 5071
+      port: 5001
       targetPort: 80
-      nodePort: 31071
+      nodePort: 31001
     type: NodePort
 
   vote:
     name: vote-svc
     ports:
       name: vote-svc
-      port: 5070
+      port: 5000
       targetPort: 80
-      nodePort: 31070
+      nodePort: 31000
     type: NodePort
 

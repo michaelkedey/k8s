@@ -1,0 +1,11 @@
+## Ref: https://github.com/kubernetes-sigs/metrics-server/blob/metrics-server-helm-chart-3.8.2/charts/metrics-server
+# Number of metrics-server replicas to run
+replicas: 2
+
+apiService:
+  # Specifies if the v1beta1.metrics.k8s.io API service should be created.
+  create: true
+
+hostNetwork:
+  # Specifies if metrics-server should be started in hostNetwork mode.
+  enabled: false

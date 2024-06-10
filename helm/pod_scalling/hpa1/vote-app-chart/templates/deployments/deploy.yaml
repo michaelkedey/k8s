@@ -3,19 +3,16 @@ kind: Deployment
 metadata:
   labels:
     app: {{ include "app" . }}
-    roles: {{ .Values.hpa.roles.core }}
   name: {{ .Values.deploy.db.name }}-{{ include "app" . }}
 spec:
   replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
       app: {{ .Values.deploy.db.name }}-{{ include "app" . }}
-      roles: {{ .Values.hpa.roles.core }}
   template:
     metadata:
       labels:
         app: {{ .Values.deploy.db.name }}-{{ include "app" . }}
-        roles: {{ .Values.hpa.roles.core }}
     spec:
       containers:
         - image: {{ .Values.deploy.db.image }}
@@ -48,19 +45,16 @@ kind: Deployment
 metadata:
   labels:
     app: {{ include "app" . }}
-    roles: {{ .Values.hpa.roles.core }}
   name: {{ .Values.deploy.redis.name }}-{{ include "app" . }}
 spec:
   replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
       app: {{ .Values.deploy.redis.name }}-{{ include "app" . }}
-      roles: {{ .Values.hpa.roles.core }}
   template:
     metadata:
       labels:
         app: {{ .Values.deploy.redis.name }}-{{ include "app" . }}
-        roles: {{ .Values.hpa.roles.core }}
     spec:
       containers:
         - image: {{ .Values.deploy.redis.image }}
@@ -88,12 +82,10 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.deploy.result.name }}-{{ include "app" . }}
-      roles: {{ .Values.hpa.roles.secondary }}
   template:
     metadata:
       labels:
         app: {{ .Values.deploy.result.name }}-{{ include "app" . }}
-        roles: {{ .Values.hpa.roles.secondary }}
     spec:
       containers:
       - image: {{ .Values.deploy.result.image }}
@@ -114,12 +106,10 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.deploy.vote.name }}-{{ include "app" . }}
-      roles: {{ .Values.hpa.roles.secondary }}
   template:
     metadata:
       labels:
         app: {{ .Values.deploy.vote.name }}-{{ include "app" . }}
-        roles: {{ .Values.hpa.roles.secondary }}
     spec:
       containers:
       - image: {{ .Values.deploy.vote.image }}
@@ -140,12 +130,10 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.deploy.worker.name }}-{{ include "app" . }}
-      roles: {{ .Values.hpa.roles.core }}
   template:
     metadata:
       labels:
         app: {{ .Values.deploy.worker.name }}-{{ include "app" . }}
-        roles: {{ .Values.hpa.roles.core }}
     spec:
       containers:
       - image: {{ .Values.deploy.worker.image }}
