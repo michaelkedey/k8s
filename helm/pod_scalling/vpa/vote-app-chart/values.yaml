@@ -196,7 +196,7 @@ deploy:
 
   worker:
     name: worker
-    image: dockersamples/examplevotingapp_worker:latest
+    image: dockersamples/examplevotingapp_worker
 
 # Service configurations
 svc:

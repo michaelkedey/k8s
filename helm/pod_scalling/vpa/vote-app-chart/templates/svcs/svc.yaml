@@ -8,8 +8,8 @@ spec:
   type: {{ .Values.svc.db.type }}
   ports:
   - name: {{ .Values.svc.db.name }}
-    port: {{ .Values.svc.db.ports.port }}
-    targetPort: {{ .Values.svc.db.ports.targetPort }}
+    port: 5432 #{{ .Values.svc.db.ports.port }}
+    targetPort: 5432 #{{ .Values.svc.db.ports.targetPort }}
   selector:
     app: {{ .Values.deploy.db.name }}-{{ include "app" . }}
 ---
@@ -23,8 +23,8 @@ spec:
   type: {{ .Values.svc.redis.type }}
   ports:
   - name: {{ .Values.svc.redis.name }}
-    port: {{ .Values.svc.redis.ports.port }}
-    targetPort: {{ .Values.svc.redis.ports.targetPort }}
+    port: 6379 #{{ .Values.svc.redis.ports.port }}
+    targetPort: 6379 #{{ .Values.svc.redis.ports.targetPort }}
   selector:
     app: {{ .Values.deploy.redis.name }}-{{ include "app" . }}
 ---
@@ -38,9 +38,9 @@ spec:
   type: {{ .Values.svc.result.type }}
   ports:
   - name: {{ .Values.svc.result.name }}
-    port: {{ .Values.svc.result.ports.port }}
-    targetPort: {{ .Values.svc.result.ports.targetPort }}
-    nodePort: {{ .Values.svc.result.ports.nodePort }}
+    port: 5003 #{{ .Values.svc.result.ports.port }}
+    targetPort: 80 #{{ .Values.svc.result.ports.targetPort }}
+    nodePort: 31003 #{{ .Values.svc.result.ports.nodePort }}
   selector:
     app: {{ .Values.deploy.result.name }}-{{ include "app" . }}
 ---
@@ -54,8 +54,8 @@ spec:
   type: {{ .Values.svc.vote.type }}
   ports:
   - name: {{ .Values.svc.vote.name }}
-    port: {{ .Values.svc.vote.ports.port }}
-    targetPort: {{ .Values.svc.vote.ports.targetPort }}
-    nodePort: {{ .Values.svc.vote.ports.nodePort }}
+    port: 5004 #{{ .Values.svc.vote.ports.port }}
+    targetPort: 80 #{{ .Values.svc.vote.ports.targetPort }}
+    nodePort: 31004 #{{ .Values.svc.vote.ports.nodePort }}
   selector:
     app: {{ .Values.deploy.vote.name }}-{{ include "app" . }}

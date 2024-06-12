@@ -18,18 +18,12 @@ spec:
         - image: {{ .Values.deploy.db.image }}
           name: {{ .Values.deploy.db.name }}-{{ include "app" . }}
           env:
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.secrets.name }}-{{ include "app" . }}
-                  key: POSTGRES_USER
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.secrets.name }}-{{ include "app" . }}
-                  key: POSTGRES_PASSWORD
+          - name: POSTGRES_USER
+            value: postgres
+          - name: POSTGRES_PASSWORD
+            value: postgres
           ports:
-            - containerPort: {{ .Values.deploy.db.port }}
+            - containerPort: 5432 #{{ .Values.deploy.db.port }}
               name: {{ .Values.deploy.db.name }}
           volumeMounts:
             - mountPath: {{ .Values.deploy.db.volumeMounts.mountPath }}
@@ -60,7 +54,7 @@ spec:
         - image: {{ .Values.deploy.redis.image }}
           name: {{ .Values.deploy.redis.name }}
           ports:
-            - containerPort: {{ .Values.deploy.redis.port }}
+            - containerPort: 6379 #{{ .Values.deploy.redis.port }}
               name: {{ .Values.deploy.redis.name }}
           volumeMounts:
             - mountPath: {{ .Values.deploy.redis.volumeMounts.mountPath }}
@@ -91,7 +85,7 @@ spec:
       - image: {{ .Values.deploy.result.image }}
         name: {{ .Values.deploy.result.name }}
         ports:
-        - containerPort: {{ .Values.deploy.result.port }}
+        - containerPort: 80 #{{ .Values.deploy.result.port }}
           name: {{ .Values.deploy.result.name }}
       serviceAccountName: {{ .Values.serviceAccount.name }}-{{ include "app" . }}
 ---
@@ -115,7 +109,7 @@ spec:
       - image: {{ .Values.deploy.vote.image }}
         name: {{ .Values.deploy.vote.name }}-{{ include "app" . }}
         ports:
-        - containerPort: {{ .Values.deploy.vote.port }}
+        - containerPort: 80 #{{ .Values.deploy.vote.port }}
           name: {{ .Values.deploy.vote.name}}
       serviceAccountName: {{ .Values.serviceAccount.name }}-{{ include "app" . }}
 ---

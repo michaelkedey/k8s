@@ -15,3 +15,9 @@ helm install metrics-server metrics-server/metrics-server --version 3.11.0\
   --namespace metrics-server \
   --create-namespace \
   -f "metrics-server-v3.11.0.yaml"
+
+
+  kubectl edit clusterrolebinding metrics-server:system:auth-delegator --editor="code --wait"
+  kubectl edit clusterrolebinding metrics-server:system:auth-delegator
+
+  kubectl get clusterrolebinding metrics-server:system:auth-delegator -o yaml > metrics-server-rbac.yaml
