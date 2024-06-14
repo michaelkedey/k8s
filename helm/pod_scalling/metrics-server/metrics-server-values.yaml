@@ -1,0 +1,39 @@
+args:
+  - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+  - --kubelet-use-node-status-port
+  - --metric-resolution=15s
+  - --secure-port=8443
+  - --kubelet-insecure-tls
+tolerations:
+  - key: "node-role.kubernetes.io/master"
+    operator: "Exists"
+    effect: "NoSchedule"
+rbac:
+  create: true
+resources:
+  requests:
+    memory: 64Mi
+    cpu: 100m
+  limits:
+    memory: 128Mi
+    cpu: 250m
+livenessProbe:
+  httpGet:
+    path: /livez
+    port: 8443
+    scheme: HTTPS
+  initialDelaySeconds: 30
+  timeoutSeconds: 10
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3
+readinessProbe:
+  httpGet:
+    path: /readyz
+    port: 8443
+    scheme: HTTPS
+  initialDelaySeconds: 30
+  timeoutSeconds: 10
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3
