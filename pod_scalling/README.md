@@ -21,3 +21,9 @@ helm install metrics-server metrics-server/metrics-server --version 3.11.0\
   kubectl edit clusterrolebinding metrics-server:system:auth-delegator
 
   kubectl get clusterrolebinding metrics-server:system:auth-delegator -o yaml > metrics-server-rbac.yaml
+
+$ docker port <CONTAINER_ID>
+22/tcp -> 127.0.0.1:58408
+2376/tcp -> 127.0.0.1:58409
+
+scp -i $(minikube ssh-key) -P 58408 /media/myuser/sourceFolder docker@127.0.0.1:/home/docker/destiationFolde
