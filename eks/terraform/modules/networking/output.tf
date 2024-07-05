@@ -19,3 +19,15 @@ output "sn_public1_id" {
 output "sn_public2_id" {
   value = aws_subnet.sn_public2.id
 }
+
+output "backend_sg" {
+  value = aws_security_group.eks_db_nodes_sg
+}
+
+output "frontend_sg" {
+  value = aws_security_group.eks_app_nodes_sg
+}
+
+output "lb_url" {
+  value = aws_lb.eks_lb.dns_name
+}

@@ -5,14 +5,16 @@ locals {
   }
 
   subnets = {
-    prvt_sn1 = cidrsubnet(var.vpc_cidr, 2, 1),
-    prvt_sn2 = cidrsubnet(var.vpc_cidr, 2, 2),
-    pblc_sn1 = cidrsubnet(var.vpc_cidr, 2, 3),
-    pblc_sn2 = cidrsubnet(var.vpc_cidr, 2, 0)
+    prvt_sn1 = cidrsubnet(var.vpc_cidr, 3, 1),
+    prvt_sn2 = cidrsubnet(var.vpc_cidr, 3, 2),
+    prvt_sn3 = cidrsubnet(var.vpc_cidr, 3, 3),
+    pblc_sn1 = cidrsubnet(var.vpc_cidr, 3, 4),
+    pblc_sn2 = cidrsubnet(var.vpc_cidr, 3, 5),
+    pblc_sn3 = cidrsubnet(var.vpc_cidr, 3, 0)
   }
 
   # AZs
-  azs = ["us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d"]
+  azs = ["us-east-1a", "us-east-1b", "us-east-1c"]
 
   # Ingress rules
   rt_rules = {
