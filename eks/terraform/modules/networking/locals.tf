@@ -26,6 +26,10 @@ locals {
       port     = 80,
       protocol = "tcp"
     },
+    rule_2a = {
+      port     = 80,
+      protocol = "HTTP"
+    },
     rule_3 = {
       port     = 0,
       protocol = -1
@@ -50,6 +54,10 @@ locals {
     rule_8 = {
       port     = 6378,
       protocol = "tcp" #redis
+    },
+    rule_9 = {
+      port     = 22,
+      protocol = "tcp" #ssh
     }
   }
 

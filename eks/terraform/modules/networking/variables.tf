@@ -32,7 +32,8 @@ variable "vpc_resource_names" {
     lb_sg      = "lb_sg",
     eip        = "eip",
     lb         = "lb",
-    tg         = "tg"
+    tg         = "tg",
+    bastion_sg = "bastion_sg"
   }
 }
 

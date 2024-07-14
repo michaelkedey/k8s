@@ -21,11 +21,15 @@ output "sn_public2_id" {
 }
 
 output "backend_sg" {
-  value = aws_security_group.eks_db_nodes_sg
+  value = aws_security_group.eks_db_nodes_sg.id
 }
 
 output "frontend_sg" {
-  value = aws_security_group.eks_app_nodes_sg
+  value = aws_security_group.eks_app_nodes_sg.id
+}
+
+output "jumper_server_sg" {
+  value = aws_security_group.bastion_sg.id
 }
 
 output "lb_url" {

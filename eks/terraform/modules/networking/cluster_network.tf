@@ -207,39 +207,6 @@ resource "aws_security_group" "eks_db_nodes_sg" {
       Name = format("%s-%s", "${var.prefix}", "${var.vpc_resource_names["db_sg"]}")
     }
   )
-
-  ingress = [
-    {
-      from_port        = local.rt_rules.rule_7.port
-      to_port          = local.rt_rules.rule_7.port
-      protocol         = local.rt_rules.rule_7.protocol
-      cidr_blocks      = local.def_egress_cidr
-      description      = "postgres"
-      ipv6_cidr_blocks = local.def_ipv6_egress_cidr
-      prefix_list_ids  = []
-      security_groups  = []
-      self             = var.disable
-    },
-
-    {
-      from_port        = local.rt_rules.rule_8.port
-      to_port          = local.rt_rules.rule_8.port
-      protocol         = local.rt_rules.rule_8.protocol
-      cidr_blocks      = local.def_egress_cidr
-      description      = "redis"
-      ipv6_cidr_blocks = local.def_ipv6_egress_cidr
-      prefix_list_ids  = []
-      security_groups  = []
-      self             = var.disable
-    }
-  ]
-  egress {
-    from_port = local.rt_rules.rule_3.port
-    to_port   = local.rt_rules.rule_3.port
-    protocol  = local.rt_rules.rule_3.protocol
-  }
-
-  #depends_on = [aws_security_group.eks_app_nodes_sg]
 }
 
 #app sg
@@ -251,29 +218,130 @@ resource "aws_security_group" "eks_app_nodes_sg" {
       Name = format("%s-%s", "${var.prefix}", "${var.vpc_resource_names["app_sg"]}")
     }
   )
+}
 
-  ingress = [
-    {
-      from_port        = local.rt_rules.rule_2.port
-      to_port          = local.rt_rules.rule_2.port
-      protocol         = local.rt_rules.rule_2.protocol
-      cidr_blocks      = local.def_egress_cidr
-      description      = "apps"
-      ipv6_cidr_blocks = local.def_ipv6_egress_cidr
-      prefix_list_ids  = []
-      security_groups  = [aws_security_group.eks_db_nodes_sg.id]
-      self             = var.disable
-    }
-  ]
 
-  egress {
-    from_port = local.rt_rules.rule_3.port
-    to_port   = local.rt_rules.rule_3.port
-    protocol  = local.rt_rules.rule_3.protocol
+resource "aws_security_group_rule" "eks_db_nodes_sg_ingress1" {
+  type                     = "ingress"
+  security_group_id        = aws_security_group.eks_db_nodes_sg.id
+  from_port                = local.rt_rules.rule_7.port
+  to_port                  = local.rt_rules.rule_7.port
+  protocol                 = local.rt_rules.rule_7.protocol
+  #self                     = var.disable
+  source_security_group_id = aws_security_group.eks_app_nodes_sg.id
+  description              = "postgres"
+  #cidr_blocks              = []
+ # ipv6_cidr_blocks         = []
+  prefix_list_ids          = []
+
+}
+
+resource "aws_security_group_rule" "eks_db_nodes_sg_ingress2" {
+  type                     = "ingress"
+  security_group_id        = aws_security_group.eks_db_nodes_sg.id
+  from_port                = local.rt_rules.rule_8.port
+  to_port                  = local.rt_rules.rule_8.port
+  protocol                 = local.rt_rules.rule_8.protocol
+  #self                     = var.disable
+  source_security_group_id = aws_security_group.eks_app_nodes_sg.id
+  description              = "redis"
+  #cidr_blocks              = []
+ # ipv6_cidr_blocks         = []
+  prefix_list_ids          = []
+
+}
+
+resource "aws_security_group_rule" "eks_db_nodes_sg_ingress3" {
+  type                     = "ingress"
+  security_group_id        = aws_security_group.eks_db_nodes_sg.id
+  from_port                = local.rt_rules.rule_9.port
+  to_port                  = local.rt_rules.rule_9.port
+  protocol                 = local.rt_rules.rule_9.protocol
+  #self                     = var.disable
+  source_security_group_id = aws_security_group.bastion_sg.id
+  description              = "ssh"
+  #cidr_blocks              = []
+ # ipv6_cidr_blocks         = []
+  prefix_list_ids          = []
+
+}
+
+resource "aws_security_group_rule" "eks_db_nodes_sg_egress" {
+  type              = "egress"
+  security_group_id = aws_security_group.eks_db_nodes_sg.id
+  from_port         = local.rt_rules.rule_3.port
+  to_port           = local.rt_rules.rule_3.port
+  protocol          = local.rt_rules.rule_3.protocol
+  cidr_blocks       = local.def_egress_cidr
+
+}
+
+resource "aws_security_group_rule" "eks_app_nodes_sg_ingress1" {
+  type              = "ingress"
+  security_group_id = aws_security_group.eks_app_nodes_sg.id
+  from_port         = local.rt_rules.rule_2.port
+  to_port           = local.rt_rules.rule_2.port
+  protocol          = local.rt_rules.rule_2.protocol
+  #self              = var.disable
+  #source_security_group_id = aws_security_group.eks_db_nodes_sg.id
+  description      = "apps"
+  cidr_blocks      = local.def_egress_cidr
+  #ipv6_cidr_blocks = []
+  prefix_list_ids  = []
+
+}
+
+resource "aws_security_group_rule" "eks_app_nodes_sg_ingress2" {
+  type                     = "ingress"
+  security_group_id        = aws_security_group.eks_app_nodes_sg.id
+  from_port                = local.rt_rules.rule_9.port
+  to_port                  = local.rt_rules.rule_9.port
+  protocol                 = local.rt_rules.rule_9.protocol
+  #self                     = var.disable
+  source_security_group_id = aws_security_group.bastion_sg.id
+  description              = "ssh"
+  #cidr_blocks              = []
+ # ipv6_cidr_blocks         = []
+  prefix_list_ids          = []
+
+}
+
+resource "aws_security_group_rule" "eks_app_nodes_sg_egress" {
+  type              = "egress"
+  security_group_id = aws_security_group.eks_app_nodes_sg.id
+  from_port         = local.rt_rules.rule_3.port
+  to_port           = local.rt_rules.rule_3.port
+  protocol          = local.rt_rules.rule_3.protocol
+  cidr_blocks       = local.def_egress_cidr
+
+}
+
+#bastion_sg
+resource "aws_security_group" "bastion_sg" {
+  vpc_id = aws_vpc.eks_vpc.id
+
+  ingress {
+    from_port   = local.rt_rules.rule_9.port
+    to_port     = local.rt_rules.rule_9.port
+    protocol    = local.rt_rules.rule_9.protocol
+    cidr_blocks = local.def_egress_cidr
   }
 
-  #depends_on = [aws_security_group.eks_db_nodes_sg]
+  egress {
+    from_port   = local.rt_rules.rule_3.port
+    to_port     = local.rt_rules.rule_3.port
+    protocol    = local.rt_rules.rule_3.protocol
+    cidr_blocks = local.def_egress_cidr
+  }
+
+  tags = merge(
+    var.tags_all,
+    {
+      Name = format("%s-%s", "${var.prefix}", "${var.vpc_resource_names["bastion_sg"]}")
+    }
+  )
 }
+
 
 #load balancer
 resource "aws_lb" "eks_lb" {
@@ -296,8 +364,8 @@ resource "aws_lb" "eks_lb" {
 #load balancer traffic listener
 resource "aws_lb_listener" "eks_lb_listener" {
   load_balancer_arn = aws_lb.eks_lb.arn
-  port              = local.rt_rules.rule_2.port
-  protocol          = local.rt_rules.rule_2.protocol
+  port              = local.rt_rules.rule_2a.port
+  protocol          = local.rt_rules.rule_2a.protocol
 
   default_action {
     type             = var.lb_default_action
@@ -309,8 +377,8 @@ resource "aws_lb_listener" "eks_lb_listener" {
 #target group for load balancer
 resource "aws_lb_target_group" "eks_lb_target_group" {
   name     = format("%s-%s", "${var.prefix}", "${var.vpc_resource_names["lb-tg"]}")
-  port     = local.rt_rules.rule_2.port
-  protocol = local.rt_rules.rule_2.protocol
+  port     = local.rt_rules.rule_2a.port
+  protocol = local.rt_rules.rule_2a.protocol
   vpc_id   = aws_vpc.eks_vpc.id
   #depends_on = [module.eks.aws_eks_node_group["two"]]
   tags = merge(

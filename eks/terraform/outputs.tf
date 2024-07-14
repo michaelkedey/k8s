@@ -17,3 +17,7 @@ output "cluster_ca_cert" {
 output "lb_url" {
   value = module.cluster_network.lb_url
 }
+
+# output "bastion_ip" {
+#   value = module.jumper_server.bastion_public_ip
+# }
