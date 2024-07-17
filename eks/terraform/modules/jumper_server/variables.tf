@@ -32,3 +32,11 @@ variable "enable" {
   default = true
   type    = bool
 }
+
+variable "private_key" {
+
+}
+
+variable "key_name" {
+
+}

@@ -32,25 +32,33 @@ output "cluster_ca_cert" {
   value = module.eks.cluster_certificate_authority_data
 }
 
-# output "node_group_one" {
-#   #value = module.eks.eks_managed_node_groups
-#   value = data.aws_eks_node_group.node_group_one.instance_ids
+output "node_group" {
+  value = module.eks.node_security_group_id
+}
+
+output "cluster_sg" {
+  value = module.eks.cluster_security_group_id
+}
+
+output "eks_cluster_sg" {
+  value = module.eks.cluster_primary_security_group_id
+}
+
+# output "eks_node_group_launch_template_id_one" {
+#   value = data.aws_eks_node_group.one.launch_template.id
+#   #value = module.eks.managed_node_group["one"].aws_eks_node_group.this[0].launch_template.id
 # }
 
-# output "node_group_two" {
-#   #value = module.eks.eks_managed_node_groups
-#   value = data.aws_eks_node_group.node_group_two.instance_ids
-
+# output "eks_node_group_launch_template_name_one" {
+#   value = data.aws_eks_node_group.one.launch_template.name
+#   #value = module.eks.managed_node_group["one"].aws_eks_node_group.this[0].launch_template.name
 # }
 
-# output "node_group_instance_ids_one" {
-#   value = data.aws_autoscaling_group.node_group_one.instances[*].id
+# output "eks_node_group_launch_template_id_two" {
+#   value = data.aws_eks_node_group.two.launch_template.id
+#   #value = module.eks.managed_node_group["two"].aws_eks_node_group.this[0].launch_template.id
 # }
 
-# output "node_group_instance_ids_two" {
-#   value = data.aws_autoscaling_group.node_group_two.instances[*].id
-# }
-
-# output "region" {
-#   value = aws_region.this.name
-# }
+output "eks_node_group_launch_template_ids" {
+  value = [for ng in data.aws_eks_node_group : ng.launch_template.id]
+}

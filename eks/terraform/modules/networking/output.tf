@@ -24,8 +24,16 @@ output "backend_sg" {
   value = aws_security_group.eks_db_nodes_sg.id
 }
 
+output "backend_sg_name" {
+  value = aws_security_group.eks_db_nodes_sg.name
+}
+
 output "frontend_sg" {
   value = aws_security_group.eks_app_nodes_sg.id
+}
+
+output "frontend_sg_name" {
+  value = aws_security_group.eks_app_nodes_sg.name
 }
 
 output "jumper_server_sg" {
@@ -34,4 +42,8 @@ output "jumper_server_sg" {
 
 output "lb_url" {
   value = aws_lb.eks_lb.dns_name
+}
+
+output "cluster_nodes_sg" {
+  value = aws_security_group.cluster_nodes_sg.id
 }
