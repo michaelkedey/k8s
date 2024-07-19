@@ -14,13 +14,17 @@ output "cluster_endpoint" {
 #   value = module.cluster.cluster_ca_cert
 # }
 
-output "lb_url" {
-  value = module.cluster_network.lb_url
-}
+# output "lb_url" {
+#   value = module.cluster_network.lb_url
+# }
 
 output "bastion_ip" {
   value = module.jumper_server.bastion_public_ip
 }
+
+# output "node_ips" {
+#  value = module.cluster.node_ips
+# }
 
 # # Output to display instance IDs
 # output "managed_node_group_one_instance_ids" {

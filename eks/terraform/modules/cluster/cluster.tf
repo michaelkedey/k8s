@@ -91,18 +91,6 @@ data "aws_ami" "latest_ubuntu" {
 
 }
 
-resource "aws_launch_template" "back_end_template" {
-  vpc_security_group_ids = [var.backend_sg]
-  name                   = format("%s-%s", "${var.prefix}", "${var.backend_template}")
-}
-
-resource "aws_launch_template" "front_end_template" {
-  vpc_security_group_ids = [var.frontend_sg]
-  name                   = format("%s-%s", "${var.prefix}", "${var.frontend_template}")
-
-}
-
-
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "20.8.5"
@@ -138,15 +126,12 @@ module "eks" {
       max_size             = var.backend_max
       desired_size         = var.backend_desired
       iam_instance_profile = aws_iam_instance_profile.ssm_instance_profile.name
-      launch_template = {
-        name    = aws_launch_template.back_end_template.name
-        #version = aws_launch_template.back_end_template.name.latest_version
-      }
-      user_data = <<-EOF
+      user_data            = <<-EOF
         #!/bin/bash
-        yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
-        systemctl start amazon-ssm-agent
-        systemctl enable amazon-ssm-agent
+        sudo apt-get update && sudo apt-get upgrade -y
+        sudo apt-get install -y amazon-ssm-agent
+        sudo systemctl enable amazon-ssm-agent
+        sudo systemctl start amazon-ssm-agent
       EOF
       tags = merge(
         var.tags_all,
@@ -166,16 +151,12 @@ module "eks" {
       max_size             = var.frontend_max
       desired_size         = var.frontend_desired
       iam_instance_profile = aws_iam_instance_profile.ssm_instance_profile.name
-      launch_template = {
-        name    = aws_launch_template.front_end_template.name
-        #version = aws_launch_template.front_end_template.name.latest_version
-      }
-
-      user_data = <<-EOF
+      user_data            = <<-EOF
         #!/bin/bash
-        yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
-        systemctl start amazon-ssm-agent
-        systemctl enable amazon-ssm-agent
+        sudo apt-get update && sudo apt-get upgrade -y
+        sudo apt-get install -y amazon-ssm-agent
+        sudo systemctl enable amazon-ssm-agent
+        sudo systemctl start amazon-ssm-agent
       EOF
 
       tags = merge(
@@ -187,14 +168,3 @@ module "eks" {
     }
   }
 }
-
-data "aws_eks_node_group" "one" {
-  cluster_name    = module.eks.cluster_name
-  node_group_name = "one"
-}
-
-data "aws_eks_node_group" "two" {
-  cluster_name    = module.eks.cluster_name
-  node_group_name = "two"
-}
-

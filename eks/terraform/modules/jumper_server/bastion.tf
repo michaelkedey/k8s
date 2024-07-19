@@ -34,6 +34,13 @@ resource "aws_iam_policy" "bastion_host_policy" {
         ]
         Resource = "*"
         Effect   = "Allow"
+      },
+      {
+        Action = [
+          "ec2:DescribeInstances"
+        ]
+        Resource = "*"
+        Effect   = "Allow"
       }
     ]
   })
@@ -75,29 +82,14 @@ resource "aws_instance" "bastion_host" {
   associate_public_ip_address = var.enable
   iam_instance_profile        = aws_iam_instance_profile.bastion_host_profile.name
   key_name                    = var.key_name #change to your key name
-
-  # provisioner "remote-exec" {
-  #   connection {
-  #     type        = "ssh"
-  #     host        = self.public_ip
-  #     user        = "ubuntu"
-  #     private_key = file(var.private_key)
-  #   }
-
-  #   inline = [
-  #     "sudo yum install -y amazon-ssm-agent",
-  #     "sudo systemctl enable amazon-ssm-agent",
-  #     "sudo systemctl start amazon-ssm-agent"
-  #   ]
-  # }
-
-  user_data = base64encode(<<EOF
+  user_data            = <<-EOF
     #!/bin/bash
-    sudo yum install -y amazon-ssm-agent
+    sudo apt-get update && sudo apt-get upgrade -y
+    sudo apt-get install -y amazon-ssm-agent
     sudo systemctl enable amazon-ssm-agent
     sudo systemctl start amazon-ssm-agent
-    EOF
-  )
+    sudo apt-get install awscli -y
+  EOF
 
   tags = merge(
     var.tags_all,

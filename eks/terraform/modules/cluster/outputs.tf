@@ -32,33 +32,10 @@ output "cluster_ca_cert" {
   value = module.eks.cluster_certificate_authority_data
 }
 
-output "node_group" {
+output "node_groups_sg" {
   value = module.eks.node_security_group_id
 }
 
-output "cluster_sg" {
-  value = module.eks.cluster_security_group_id
-}
-
-output "eks_cluster_sg" {
-  value = module.eks.cluster_primary_security_group_id
-}
-
-# output "eks_node_group_launch_template_id_one" {
-#   value = data.aws_eks_node_group.one.launch_template.id
-#   #value = module.eks.managed_node_group["one"].aws_eks_node_group.this[0].launch_template.id
-# }
-
-# output "eks_node_group_launch_template_name_one" {
-#   value = data.aws_eks_node_group.one.launch_template.name
-#   #value = module.eks.managed_node_group["one"].aws_eks_node_group.this[0].launch_template.name
-# }
-
-# output "eks_node_group_launch_template_id_two" {
-#   value = data.aws_eks_node_group.two.launch_template.id
-#   #value = module.eks.managed_node_group["two"].aws_eks_node_group.this[0].launch_template.id
-# }
-
-output "eks_node_group_launch_template_ids" {
-  value = [for ng in data.aws_eks_node_group : ng.launch_template.id]
+output "node_ids" {
+  value = module.eks.cluster_ip_family
 }

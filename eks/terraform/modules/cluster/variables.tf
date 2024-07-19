@@ -79,18 +79,6 @@ variable "frontend_instances" {
   type    = list(string)
 }
 
-variable "backend_sg" {
-
-}
-
-variable "frontend_sg" {
-
-}
-
-variable "bastion_host_ip" {
-
-}
-
 variable "private_sn1" {
 
 }
@@ -107,17 +95,6 @@ variable "policy_name" {
   default = "ssm-policy"
 }
 
-variable "cluster_nodes_sg" {
-
-}
-
-variable "frontend_template" {
-  default = "frontend_template"
-}
-
-variable "backend_template" {
-  default = "backend_template"
-}
 
 variable "tags_all" {
   default = {

@@ -69,21 +69,25 @@ variable "vpc_endpoint_type" {
   default = "Interface"
 }
 
-variable "node_sg" {
+variable "nodes_sg_id" {
 
 }
 
-variable "cluster_sg_id" {
-
+variable "ssm_egress" {
+  default = "ssm.us-east-1.amazonaws.com"
 }
 
-variable "eks_cluster_sg" {
+# variable "cluster_sg_id" {
 
-}
+# }
 
-variable "launch_one_name" {
-  
-}
+# variable "eks_cluster_sg" {
+
+# }
+
+# variable "launch_one_name" {
+
+# }
 
 # variable "eks_node_group1" {
 
