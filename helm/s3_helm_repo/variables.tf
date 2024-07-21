@@ -1,0 +1,3 @@
+variable "logs_bucket" {
+
+}
