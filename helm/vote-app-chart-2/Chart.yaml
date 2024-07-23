@@ -1,0 +1,29 @@
+apiVersion: v2
+name: vote-app-chart-2
+version: 1.0.0
+description: Helm chart for deploying the vote-app-2 application on Kubernetes.
+maintainers:
+  - name: Michael Kedey
+    email: privatemyk@gmail.com
+    url: 
+      https://github.com/michaelkedey
+      https://www.linkedin.com/in/michaelkedey
+home: https://github.com/michaelkedey/example-voting-app
+sources:
+  - https://github.com/michaelkedey/example-voting-app
+keywords:
+  - db
+  - postgres
+  - redis
+  - deploy
+  - svc
+  - vote-app
+  - Kubernetes
+  - Helm
+# dependencies:
+#   - name: postgresql
+#     version: 9.x
+#     repository: https://charts.bitnami.com/bitnami
+#     condition: postgresql.enabled
+# appVersion: 2.1.3
+#icon: https://example.com/my-app-icon.png

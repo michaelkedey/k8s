@@ -15,6 +15,6 @@ output "bucket_id" {
 }
 
 output "bucket_url" {
-  value = aws_s3_bucket.helm_repo_bucket.website_endpoint
+  value = aws_s3_bucket.helm_repo_bucket.bucket_regional_domain_name
 }
 

@@ -24,22 +24,23 @@ variable "version_status" {
   type    = string
 }
 
+variable "acl" {
+  default = "public-read"
+  type    = string
+}
+
 variable "enable" {
   default = true
   type    = bool
 }
 
-variable "file_path" {
-  default = "../../uploads"
+variable "disable" {
+  default = false
+  type    = bool
 }
 
 variable "suffix" {
   default = "index.yaml"
-  type    = string
-}
-
-variable "acl" {
-  default = "private"
   type    = string
 }
 
@@ -54,5 +55,10 @@ variable "logs_bucket" {
 
 variable "logs_prefix" {
   default = "helm-repo-logs/"
+  type    = string
+}
+
+variable "s3_ownership" {
+  default = "BucketOwnerPreferred"
   type    = string
 }
