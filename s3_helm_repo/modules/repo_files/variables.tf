@@ -1,4 +1,4 @@
-variable "file_path" {
+variable "path" {
   type    = string
   default = "../../uploads"
 }
