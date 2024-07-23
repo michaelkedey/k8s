@@ -8,6 +8,17 @@
     - here, I have deffined in `terraform` how to set up an `eks` cluster, complete with the nrtworking required to succesfully deploy the [vote-app application](https://github.com/michaelkedey/example-voting-app)
     - there is a module which contains the cluster setup, networking and jumper server
     - refer to the directory structure for how to set up a similar cluster via `terraform`
+    - **remember `eks` is very expensive to run, therfor resoures must be destroyed after pcatice**
+    - access the cluster from your local machine
+        - run
+        ```
+        aws eks update-kubeconfig --name <cluster-name> --region <cluster-region>
+        ```  
+    - verify the eks cluster is accessible from your loca; environemnt
+        - run
+        ```
+        kubectl config get-contexts
+        ```  
 - [helm](./helm/)
     - this contains `helm` charts which completely define how to deploy the [vote-app application](https://github.com/michaelkedey/example-voting-app) via `helm`
     - it has 2 charts [vote-app-char-1](./helm/vote-app-chart-1/) and [vote-app-char-2](./helm/vote-app-chart-2/)
