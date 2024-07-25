@@ -1,7 +1,7 @@
 # k8s
 ### Overview
 **This repo contains kubernetes manifests for for deploying the [vote-app application](https://github.com/michaelkedey/example-voting-app)**
-- (fork)[https://github.com/michaelkedey/k8s/fork] and [clone](https://github.com/michaelkedey/k8s.git) the [k8s repo](https://github.com/michaelkedey/k8s/fork) to stay updated with any changes.
+- [fork](https://github.com/michaelkedey/k8s/fork) and [clone](https://github.com/michaelkedey/k8s.git) the [k8s repo](https://github.com/michaelkedey/k8s/fork) to stay updated with any changes.
 **This repo contains codes for :**
 - [argo_cd](./argo_cd)
     - this manifest file defines how you can deploy the [vote-app application](https://github.com/michaelkedey/example-voting-app) via `argo_cd`, a continous delivery (cicd) tool.
@@ -26,7 +26,7 @@
                 ```
             - open the `env/.terraform.tfvars` file and change the the key_name to the `iam key` you have in `aws`
             - chnage the private-key to the path to the downloaded `key pair` on your local machine
-        - run the `.format.sh` to initialize terraform on your local macchine, and format and valifdate the code
+        - execute the `.format.sh` to initialize terraform on your local macchine, and format and valifdate the code
         - run `terraform plan` to plan the resources that will be created
         - run `terraform apply` and submit yes when prompted, to create the resources
         - get the `cluster name` and `jumper server public ip` from the outputs in the terminal 
@@ -48,7 +48,7 @@
 - [helm](./helm/)
     - this contains `helm` charts which completely define how to deploy the [vote-app application](https://github.com/michaelkedey/example-voting-app) via `helm`
     - it has 2 charts [vote-app-char-1](./helm/vote-app-chart-1/) and [vote-app-char-2](./helm/vote-app-chart-2/)
-    - both charts contain similar configurations to deploy the `vot-app` 
+    - both charts contain similar configurations to deploy the [vote-app application](https://github.com/michaelkedey/example-voting-app)  
     - **happy helming**
 - [pod_scalling](./pod_scalling/)
     - here, I have deffined similar helm charts for the `vote-app` but with extra resources or features.
@@ -59,7 +59,7 @@
     - **happy helming**
 - [s3_helm_repo](./s3_helm_repo/)
   - this contains `terraform` configurations to set up an `s3` bucket as a `helm` `repository
-  - add my `vote-app-repo` to your helm charts
+  - to add my `vote-app-repo` to your helm charts
     - add the repo
         ```
         helm repo add s3-vote-app-repo https://helm-myoneansonlyhelmrepobucket.s3.us-east-1.amazonaws.com
