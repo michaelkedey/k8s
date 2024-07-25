@@ -1,14 +1,36 @@
 # k8s
 ### Overview
 **This repo contains kubernetes manifests for for deploying the [vote-app application](https://github.com/michaelkedey/example-voting-app)**
+- (fork)[https://github.com/michaelkedey/k8s/fork] and [clone](https://github.com/michaelkedey/k8s.git) the [k8s repo](https://github.com/michaelkedey/k8s/fork) to stay updated with any changes.
+**This repo contains codes for :**
 - [argo_cd](./argo_cd)
-    - this manifest file defines how you can deploy the [vote-app application](https://github.com/michaelkedey/example-voting-app) in via `argo_cd`, a continous delivery (cicd) tool.
-        - refer to [assignment_014](https://github.com/michaelkedey/practice-devops-assignments/tree/main/assignment_014) for how to set up your `argo_cd` server. 
+    - this manifest file defines how you can deploy the [vote-app application](https://github.com/michaelkedey/example-voting-app) via `argo_cd`, a continous delivery (cicd) tool.
+        - [fork](https://github.com/michaelkedey/practice-devops-assignments/fork) the [practice-devops-assignmnets repo](https://github.com/michaelkedey/practice-devops-assignments/fork) and refer to [assignment_014](https://github.com/michaelkedey/practice-devops-assignments/tree/main/assignment_014) for how to set up your `argo_cd` server. 
 - [eks - amazon elastic kubernetes service](./eks/terraform/)
     - here, I have deffined in `terraform` how to set up an `eks` cluster, complete with the nrtworking required to succesfully deploy the [vote-app application](https://github.com/michaelkedey/example-voting-app)
-    - there is a module which contains the cluster setup, networking and jumper server
-    - refer to the directory structure for how to set up a similar cluster via `terraform`
-    - **remember `eks` is very expensive to run, therfor resoures must be destroyed after pcatice**
+    - there are modules which contains the cluster setup, networking and jumper server
+    - refer to the [eks - amazon elastic kubernetes service](./eks/terraform/)directory structure for how to set up a similar cluster via `terraform`
+    - to run this code:
+        -  (fork)[https://github.com/michaelkedey/k8s/fork] and [clone](https://github.com/michaelkedey/k8s.git) the [k8s repo]
+        -  make sure you have `terraform` configured on your local
+        -  make sure you have `awscli` configured with the correct iam credentials
+        -  `cd` to the `eks` directory
+            ```
+            cd eks/terraform
+            ```
+        - change the `backend`  configuration to local
+            -  open the [providers.tf](./eks/terraform/providers.tf) file and comment out the backend configuration
+            -  open the `.format.sh` script and modify the init command by removing the backend arguement
+                ```
+                terraform init
+                ```
+            - open the `env/.terraform.tfvars` file and change the the key_name to the `iam key` you have in `aws`
+            - chnage the private-key to the path to the downloaded `key pair` on your local machine
+        - run the `.format.sh` to initialize terraform on your local macchine, and format and valifdate the code
+        - run `terraform plan` to plan the resources that will be created
+        - run `terraform apply` and submit yes when prompted, to create the resources
+        - get the `cluster name` and `jumper server public ip` from the outputs in the terminal 
+    - **remember `eks` is very expensive to run, therefor resources must be destroyed after pcatice**
     - access the cluster from your local machine
         - run
         ```
@@ -19,6 +41,10 @@
         ```
         kubectl config get-contexts
         ```  
+    - destroy your `eks`
+        ```
+        terraform destroy --auto-approve
+        ```
 - [helm](./helm/)
     - this contains `helm` charts which completely define how to deploy the [vote-app application](https://github.com/michaelkedey/example-voting-app) via `helm`
     - it has 2 charts [vote-app-char-1](./helm/vote-app-chart-1/) and [vote-app-char-2](./helm/vote-app-chart-2/)
