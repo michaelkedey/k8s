@@ -70,7 +70,7 @@
         ```
     - install the `vote-app` via the new repo you just added
         ```
-        helm install vote-app s3-vote-app-repo/vote-app
+        helm install vote-app s3-vote-app-repo/vote-app-chart-1
         ```
     - **happy helming**
 
