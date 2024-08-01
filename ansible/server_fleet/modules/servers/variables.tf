@@ -1,3 +1,13 @@
+variable "instance_count" {
+  type        = number
+  default     = 3
+}
+
+variable "instance_types" {
+  type        = list(string)
+  default     = ["t2.micro", "t2.small", "t2.medium"]
+}
+
 variable "tags_all" {
   default = {
     "Environment" = "production",
@@ -6,25 +16,15 @@ variable "tags_all" {
 }
 
 variable "prefix" {
-  default = "eks"
+  default = "ansible"
   type    = string
 }
 
-variable "name" {
-  default = "bastion_host"
-  type    = string
-}
-
-variable "instance_type" {
-  default = "t2.micro"
-  type    = string
-}
-
-variable "subnet_id" {
+variable "subnet_ids" {
   type = string
 }
 
-variable "sg" {
+variable "sgs" {
   type = list(string)
 }
 

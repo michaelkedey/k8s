@@ -9,7 +9,6 @@ module "jumper_server" {
   source      = "./modules/jumper_server"
   sg          = [module.cluster_network.jumper_server_sg]
   subnet_id   = module.cluster_network.sn_public2_id
-  private_key = var.private_key
   key_name    = var.key_name
 }
 

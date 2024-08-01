@@ -6,7 +6,7 @@ variable "tags_all" {
 }
 
 variable "prefix" {
-  default = "eks"
+  default = "ansible"
   type    = string
 }
 
@@ -35,4 +35,19 @@ variable "enable" {
 
 variable "key_name" {
 
+}
+
+variable "ssm_host_profile"{
+  default = "ssm_bastion_host_profile"
+  type = string
+}
+
+variable "ssm_host_policy"{
+  default = "ssm_bastion_host_policy"
+  type = string
+}
+
+variable "ssm_host_role"{
+  default = "ssm_bastion_host_role"
+  type = string
 }
