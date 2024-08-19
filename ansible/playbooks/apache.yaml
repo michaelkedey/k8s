@@ -1,0 +1,31 @@
+---
+- name: Install Apache and deploy index.html
+  hosts: webservers
+  become: true
+
+  tasks:
+  - name: Install Apache
+    apt:
+      name: apache2
+      state: present
+
+  - name: Copy index.html to servers
+    copy:
+      content: "<h1>Welcome to {{ inventory_hostname }}!</h1>"
+      dest: /var/www/html/index.html
+      mode: '0644'
+
+  - name: Restart Apache
+    service:
+      name: apache2
+      state: restarted
+
+  - name: Verify server accessibility using curl
+    uri:
+      url: "http://{{ ansible_host }}/"
+      return_content: yes
+    register: curl_result
+
+  - name: Display curl result
+    debug:
+      msg: "Server {{ inventory_hostname }} is accessible: {{ curl_result.status }} - {{ curl_result.content }}"

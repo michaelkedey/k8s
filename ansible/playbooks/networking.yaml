@@ -1,0 +1,27 @@
+---
+- name: Network Checks
+  hosts: webservers
+  gather_facts: no
+  tasks:
+    - name: Ping hosts to ensure they are reachable
+      ansible.builtin.ping:
+      register: ping_result
+
+    - name: Display ping results
+      ansible.builtin.debug:
+        msg: "Ping to {{ inventory_hostname }} succeeded: {{ ping_result.ping }}"
+
+    - name: Check connectivity to a specific port
+      ansible.builtin.wait_for:
+        port: "{{ port }}"
+        host: "{{ inventory_hostname }}"
+        timeout: 5
+        state: started
+      register: port_check
+
+    - name: Display port connectivity results
+      ansible.builtin.debug:
+        msg: "Port {{ port }} on {{ inventory_hostname }} is reachable: {{ port_check.state }}"
+
+  vars:
+    port: 80  

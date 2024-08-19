@@ -1,7 +1,7 @@
 #ami
 data "aws_ami" "latest_ubuntu" {
   most_recent = true
-  provider    = aws.eks_region
+  provider    = aws.ansible_region
   filter {
     name   = "name"
     values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]

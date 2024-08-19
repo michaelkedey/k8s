@@ -1,0 +1,7 @@
+---
+- name: Install Apache and deploy index.html
+  hosts: webservers
+  become: true
+
+  roles:
+    - apache

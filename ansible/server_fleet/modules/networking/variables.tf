@@ -27,8 +27,8 @@ variable "vpc_resource_names" {
     lb            = "lb",
     lb-tg         = "lb-tg-http",
     cluster_sg    = "cluster_sg",
-    db_sg         = "db_nodes_sg",
-    app_sg        = "app_nodes_sg"
+    control_sg         = "control_nodes_sg",
+    slaves_sg        = "app_nodes_sg"
     lb_sg         = "lb_sg",
     eip           = "eip",
     lb            = "lb",
@@ -72,6 +72,10 @@ variable "vpc_endpoint_type" {
 
 variable "ssm_egress" {
   default = "ssm.us-east-1.amazonaws.com"
+}
+
+variable "instance_ids" {
+  
 }
 
 # variable "cluster_sg_id" {

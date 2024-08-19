@@ -1,0 +1,65 @@
+# ---
+# - name: Install Apache
+#   apt:
+#     name: apache2
+#     state: present
+
+# - name: Copy index.html to servers
+#   template:
+#     src: index.html.j2
+#     dest: /var/www/html/index.html
+#     mode: '0644'
+
+# - name: Restart Apache
+#   service:
+#     name: apache2
+#     state: restarted
+
+# - name: Verify server accessibility using curl
+#   uri:
+#     url: "http://{{ ansible_host }}/"
+#     return_content: yes
+#   register: curl_result
+
+# - name: Display curl result
+#   debug:
+#     msg: "Server {{ ansible_host }} is accessible: {{ curl_result.status }} - {{ curl_result.content }}"
+
+
+
+# roles/apache2/tasks/main.yml
+---
+- name: Install Apache
+  apt:
+    name: apache2
+    state: present
+    update_cache: yes
+
+- name: Deploy index.html from Jinja2 template
+  template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+    owner: www-data
+    group: www-data
+    mode: '0644'
+
+- name: Ensure Apache is running
+  service:
+    name: apache2
+    state: started
+    enabled: yes
+
+- name: Check server accessibility with curl
+  command: curl -s -o /dev/null -w "%{http_code}" http://localhost
+  register: curl_result
+
+- name: Display curl result
+  debug:
+    msg: "HTTP Status Code: {{ curl_result.stdout }}"
+
+- name: Ensure the HTTP status code is 200
+  assert:
+    that:
+      - curl_result.stdout == "200"
+    fail_msg: "The server did not return HTTP status code 200"
+    success_msg: "The server is accessible and returned HTTP status code 200"

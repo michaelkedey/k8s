@@ -1,0 +1,20 @@
+---
+defaults:
+  host_key_checking: false
+
+webservers:
+  hosts:
+    server1:
+      ansible_host: 177.70.0.41
+    server2:
+      ansible_host: 177.70.0.42
+    server3:
+      ansible_host: 177.70.0.52
+
+  vars:
+    http_port: 80
+    max_clients: 200
+
+all:
+  children:
+    webservers

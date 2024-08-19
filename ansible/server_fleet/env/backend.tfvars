@@ -1,6 +1,6 @@
 #bucket exists already dev
 bucket = "web-pro-bucket"
-key    = "tfstates/ansible/env/terraform.tfstate"
+key    = "terraform/tfstates/ansible/env/terraform.tfstate"
 region = "us-east-1"
 
 

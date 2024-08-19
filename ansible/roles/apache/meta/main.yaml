@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  author: mivhael_kedey
+  description: Apache server role
+  company: iridis
+  license: Apache
+  min_ansible_version: 2.9
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+  galaxy_tags:
+    - apache
+    - webserver

@@ -1,7 +1,7 @@
 resource "aws_ssm_parameter" "vpc_id" {
   name  = format("/%s/%s", "${var.prefix}", "${var.vpc_resource_names["vpc"]}")
   type  = "String"
-  value = aws_vpc.eks_vpc.id
+  value = aws_vpc.ansible_vpc.id
   lifecycle {
     ignore_changes = [value]
   }

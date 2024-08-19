@@ -1,0 +1,4 @@
+# roles/apache2/defaults/main.yml
+---
+site_title: "My Awesome Site"
+greeting_message: "Hello from Ansible Managed Server!"

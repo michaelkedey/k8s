@@ -1,11 +1,11 @@
 variable "instance_count" {
   type        = number
-  default     = 3
+  default     = 5
 }
 
 variable "instance_types" {
   type        = list(string)
-  default     = ["t2.micro", "t2.small", "t2.medium"]
+  default     = ["t2.micro","t2.medium"]
 }
 
 variable "tags_all" {
@@ -28,11 +28,17 @@ variable "sgs" {
   type = list(string)
 }
 
-variable "enable" {
-  default = true
-  type    = bool
-}
-
 variable "key_name" {
 
 }
+
+variable "configurations" {
+  description = "The total configuration, List of Objects/Dictionary"
+  type = list(object({
+    name            = string
+    no_of_instances = number
+    instance_type   = string
+  }))
+}
+
+

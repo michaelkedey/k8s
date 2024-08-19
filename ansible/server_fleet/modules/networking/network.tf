@@ -39,19 +39,6 @@ resource "aws_subnet" "sn_private2" {
   )
 }
 
-resource "aws_subnet" "sn_private3" {
-  vpc_id            = aws_vpc.ansible_vpc.id
-  cidr_block        = local.subnets["prvt_sn3"]
-  provider          = aws.ansible_region
-  availability_zone = local.azs[2]
-  tags = merge(
-    var.tags_all,
-    {
-      Name = format("%s-%s", "${var.prefix}", "${var.vpc_resource_names["prvt_sn3"]}")
-    }
-  )
-}
-
 #public subnets
 resource "aws_subnet" "sn_public1" {
   vpc_id            = aws_vpc.ansible_vpc.id
@@ -79,18 +66,6 @@ resource "aws_subnet" "sn_public2" {
   )
 }
 
-resource "aws_subnet" "sn_public3" {
-  vpc_id            = aws_vpc.ansible_vpc.id
-  cidr_block        = local.subnets["pblc_sn3"]
-  provider          = aws.ansible_region
-  availability_zone = local.azs[2]
-  tags = merge(
-    var.tags_all,
-    {
-      Name = format("%s-%s", "${var.prefix}", "${var.vpc_resource_names["pblc_sn3"]}")
-    }
-  )
-}
 
 #Internet_gateway
 resource "aws_internet_gateway" "ansible_igw" {
@@ -128,11 +103,6 @@ resource "aws_route_table_association" "pblc_rt_assoc1" {
 #associate public rt with public subnet2
 resource "aws_route_table_association" "pblc_rt_assoc2" {
   subnet_id      = aws_subnet.sn_public2.id
-  route_table_id = aws_route_table.ansible_public_rt.id
-}
-
-resource "aws_route_table_association" "pblc_rt_assoc3" {
-  subnet_id      = aws_subnet.sn_public3.id
   route_table_id = aws_route_table.ansible_public_rt.id
 }
 
@@ -192,110 +162,150 @@ resource "aws_route_table_association" "private_association2" {
   route_table_id = aws_route_table.ansible_private_rt.id
 }
 
-#associate private rt with private sn2
-resource "aws_route_table_association" "private_association3" {
-  subnet_id      = aws_subnet.sn_private3.id
-  route_table_id = aws_route_table.ansible_private_rt.id
-}
-
-# db sg
-resource "aws_security_group" "ansible_servers_sg" {
+# control node sg
+resource "aws_security_group" "ansible_control_node_sg" {
   vpc_id = aws_vpc.ansible_vpc.id
-  name   = format("%s-%s", "${var.prefix}", "${var.vpc_resource_names["db_sg"]}")
+  name   = format("%s-%s", "${var.prefix}", "${var.vpc_resource_names["control_sg"]}")
   tags = merge(
     var.tags_all,
     {
-      Name = format("%s-%s", "${var.prefix}", "${var.vpc_resource_names["db_sg"]}")
+      Name = format("%s-%s", "${var.prefix}", "${var.vpc_resource_names["control_sg"]}")
     }
   )
 }
 
-#bastion_sg
-resource "aws_security_group" "bastion_sg" {
-  vpc_id = aws_vpc.ansible_vpc.id
-  name   = format("%s-%s", "${var.prefix}", "${var.vpc_resource_names["bastion_sg"]}")
-
-  ingress {
-    from_port   = local.rt_rules.rule_9.port
-    to_port     = local.rt_rules.rule_9.port
-    protocol    = local.rt_rules.rule_9.protocol
-    cidr_blocks = local.def_egress_cidr
-    #security_groups = [aws_security_group.ansible_app_nodes_sg.id, aws_security_group.ansible_servers_sg.id]
-  }
-
-  egress {
-    from_port   = local.rt_rules.rule_3.port
-    to_port     = local.rt_rules.rule_3.port
-    protocol    = local.rt_rules.rule_3.protocol
-    cidr_blocks = local.def_egress_cidr
-  }
-
-  tags = merge(
-    var.tags_all,
-    {
-      Name = format("%s-%s", "${var.prefix}", "${var.vpc_resource_names["bastion_sg"]}")
-    }
-  )
-}
 
 resource "aws_security_group_rule" "ansible_servers_sg_ingress1" {
   type              = "ingress"
-  security_group_id = aws_security_group.ansible_servers_sg.id
+  security_group_id = aws_security_group.ansible_control_node_sg.id
   from_port         = local.rt_rules.rule_9.port
   to_port           = local.rt_rules.rule_9.port
   protocol          = local.rt_rules.rule_9.protocol
   #self                     = var.disable
-  source_security_group_id = aws_security_group.bastion_sg.id
-  description              = "allow bastion ssh"
-  #cidr_blocks              = []
+  #source_security_group_id = aws_security_group.bastion_sg.id
+  description              = "allow control ssh"
+  cidr_blocks              = local.def_egress_cidr
   # ipv6_cidr_blocks         = []
   prefix_list_ids = []
 
 }
 
-#load balancer
-resource "aws_lb" "ansible_lb" {
-  name               = format("%s-%s", "${var.prefix}", "${var.vpc_resource_names["lb"]}")
-  internal           = var.disable
-  load_balancer_type = var.load_balancer_type
-  security_groups    = [aws_security_group.ansible_app_nodes_sg.id]
-  subnets            = [aws_subnet.sn_public1.id, aws_subnet.sn_public2.id, aws_subnet.sn_public3.id]
-  #enable_deletion_protection = true
+resource "aws_security_group_rule" "ansible_servers_sg_egress1" {
+  type              = "egress"
+  security_group_id = aws_security_group.ansible_control_node_sg.id
+  from_port         = local.rt_rules.rule_3.port
+  to_port           = local.rt_rules.rule_3.port
+  protocol          = local.rt_rules.rule_3.protocol
+  #self                     = var.disable
+  #source_security_group_id = aws_security_group.bastion_sg.id
+  description              = "allow bastion ssh"
+  cidr_blocks              = local.def_egress_cidr
+  # ipv6_cidr_blocks         = []
+  prefix_list_ids = []
 
+}
+
+
+# slaves node sg
+resource "aws_security_group" "ansible_slave_node_sg" {
+  vpc_id = aws_vpc.ansible_vpc.id
+  name   = format("%s-%s", "${var.prefix}", "${var.vpc_resource_names["slaves_sg"]}")
   tags = merge(
     var.tags_all,
     {
-      Name = format("%s-%s", "${var.prefix}", "${var.vpc_resource_names["lb"]}")
+      Name = format("%s-%s", "${var.prefix}", "${var.vpc_resource_names["slaves_sg"]}")
     }
   )
 }
 
+resource "aws_security_group_rule" "ansible_slaves_sg_ingress1" {
+  type              = "ingress"
+  security_group_id = aws_security_group.ansible_slave_node_sg.id
+  from_port         = local.rt_rules.rule_9.port
+  to_port           = local.rt_rules.rule_9.port
+  protocol          = local.rt_rules.rule_9.protocol
+  #self                     = var.disable
+  source_security_group_id = aws_security_group.ansible_control_node_sg.id
+  description              = "allow control ssh"
+  #cidr_blocks              = local.def_egress_cidr
+  # ipv6_cidr_blocks         = []
+  prefix_list_ids = []
 
-#load balancer traffic listener
-resource "aws_lb_listener" "ansible_lb_listener" {
-  load_balancer_arn = aws_lb.ansible_lb.arn
-  port              = local.rt_rules.rule_2a.port
-  protocol          = local.rt_rules.rule_2a.protocol
-
-  default_action {
-    type             = var.lb_default_action
-    target_group_arn = aws_lb_target_group.ansible_lb_target_group.arn
-  }
-  tags = var.tags_all
 }
 
-#target group for load balancer
-resource "aws_lb_target_group" "ansible_lb_target_group" {
-  name     = format("%s-%s", "${var.prefix}", "${var.vpc_resource_names["lb-tg"]}")
-  port     = local.rt_rules.rule_2a.port
-  protocol = local.rt_rules.rule_2a.protocol
-  vpc_id   = aws_vpc.ansible_vpc.id
-  #depends_on = [module.ansible.aws_ansible_node_group["two"]]
-  tags = merge(
-    var.tags_all,
-    {
-      Name = format("%s-%s", "${var.prefix}", "${var.vpc_resource_names["lb-tg"]}")
-    }
-  )
+resource "aws_security_group_rule" "ansible_slaves_sg_egress1" {
+  type              = "egress"
+  security_group_id = aws_security_group.ansible_slave_node_sg.id
+  from_port         = local.rt_rules.rule_3.port
+  to_port           = local.rt_rules.rule_3.port
+  protocol          = local.rt_rules.rule_3.protocol
+  #self                     = var.disable
+  #source_security_group_id = aws_security_group.bastion_sg.id
+  description              = "allow bastion ssh"
+  cidr_blocks              = local.def_egress_cidr
+  # ipv6_cidr_blocks         = []
+  prefix_list_ids = []
+
 }
 
+
+# #load balancer
+# resource "aws_lb" "ansible_lb" {
+#   name               = format("%s-%s", "${var.prefix}", "${var.vpc_resource_names["lb"]}")
+#   internal           = var.disable
+#   load_balancer_type = var.load_balancer_type
+#   security_groups    = [aws_security_group.ansible_slave_node_sg.id]
+#   subnets            = [aws_subnet.sn_public1.id, aws_subnet.sn_public2.id]
+#   #enable_deletion_protection = true
+
+#   tags = merge(
+#     var.tags_all,
+#     {
+#       Name = format("%s-%s", "${var.prefix}", "${var.vpc_resource_names["lb"]}")
+#     }
+#   )
+# }
+
+
+# #load balancer traffic listener
+# resource "aws_lb_listener" "ansible_lb_listener" {
+#   load_balancer_arn = aws_lb.ansible_lb.arn
+#   port              = local.rt_rules.rule_2a.port
+#   protocol          = local.rt_rules.rule_2a.protocol
+
+#   default_action {
+#     type             = var.lb_default_action
+#     target_group_arn = aws_lb_target_group.ansible_lb_target_group.arn
+#   }
+#   tags = var.tags_all
+# }
+
+# #target group for load balancer
+# resource "aws_lb_target_group" "ansible_lb_target_group" {
+#   name     = format("%s-%s", "${var.prefix}", "${var.vpc_resource_names["lb-tg"]}")
+#   port     = local.rt_rules.rule_2a.port
+#   protocol = local.rt_rules.rule_2a.protocol
+#   vpc_id   = aws_vpc.ansible_vpc.id
+#   #depends_on = [module.ansible.aws_ansible_node_group["two"]]
+#   tags = merge(
+#     var.tags_all,
+#     {
+#       Name = format("%s-%s", "${var.prefix}", "${var.vpc_resource_names["lb-tg"]}")
+#     }
+#   )
+# }
+
+# # resource "aws_lb_target_group_attachment" "ansible_lb_target_group_attch" {
+# #   for_each = { for instance in aws_instance.server_fleet : instance.id => instance}
+
+# #   target_group_arn = aws_lb_target_group.ansible_lb_target_group.arn
+# #   target_id        = each.value.id
+# # }
+
+# resource "aws_lb_target_group_attachment" "ansible_lb_target_group_attch" {
+#   count = length(var.instance_ids)
+
+#   target_group_arn = aws_lb_target_group.ansible_lb_target_group.arn
+#   target_id         = var.instance_ids[count.index]
+
+# }
