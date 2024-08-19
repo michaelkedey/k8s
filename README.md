@@ -3,7 +3,7 @@
 **This repo contains kubernetes manifests for for deploying the [vote-app application](https://github.com/michaelkedey/example-voting-app)**
 - [fork](https://github.com/michaelkedey/k8s/fork) and [clone](https://github.com/michaelkedey/k8s.git) the [k8s repo](https://github.com/michaelkedey/k8s/fork) to stay updated with any changes.
 **This repo contains codes for :**
--[ansible](./ansible/)
+- [ansible](./ansible/)
     - in this configuration, i used `terraform` to provission an ansible control host and a fleet of servers
     - in the ansible configurations, i have defined `roles` and `playbooks` to manage the fleet of servers from the control host
     - i have defind roles to `ping`, check commecetivity to `specific ports` and perform `apache` installations on the server fleets.
