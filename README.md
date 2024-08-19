@@ -3,6 +3,10 @@
 **This repo contains kubernetes manifests for for deploying the [vote-app application](https://github.com/michaelkedey/example-voting-app)**
 - [fork](https://github.com/michaelkedey/k8s/fork) and [clone](https://github.com/michaelkedey/k8s.git) the [k8s repo](https://github.com/michaelkedey/k8s/fork) to stay updated with any changes.
 **This repo contains codes for :**
+-[ansible](./ansible/)
+    - in this configuration, i used `terraform` to provission an ansible control host and a fleet of servers
+    - in the ansible configurations, i have defined `roles` and `playbooks` to manage the fleet of servers from the control host
+    - i have defind roles to `ping`, check commecetivity to `specific ports` and perform `apache` installations on the server fleets.
 - [argo_cd](./argo_cd)
     - this manifest file defines how you can deploy the [vote-app application](https://github.com/michaelkedey/example-voting-app) via `argo_cd`, a continous delivery (cicd) tool.
         - [fork](https://github.com/michaelkedey/practice-devops-assignments/fork) the [practice-devops-assignmnets repo](https://github.com/michaelkedey/practice-devops-assignments/fork) and refer to [assignment_014](https://github.com/michaelkedey/practice-devops-assignments/tree/main/assignment_014) for how to set up your `argo_cd` server. 
@@ -80,7 +84,61 @@
 ```plaintext
 $ tree
 .
-|-- README.md
+|-- README.md    
+|-- ansible      
+|   |-- inventory
+|   |-- playbooks
+|   |   |-- apache.yaml 
+|   |   |-- apache2.yaml
+|   |   `-- networking.yaml
+|   |-- roles
+|   |   |-- apache
+|   |   |   |-- defaults
+|   |   |   |   `-- main.yaml
+|   |   |   |-- handlers
+|   |   |   |-- meta    
+|   |   |   |   `-- main.yaml
+|   |   |   |-- tasks     
+|   |   |   |   `-- main.yaml    
+|   |   |   |-- templates        
+|   |   |   |   `-- index.html.j2
+|   |   |   `-- vars
+|   |   `-- networking
+|   |       |-- README.md
+|   |       |-- defaults
+|   |       |-- handlers
+|   |       |-- tasks
+|   |       `-- vars
+|   `-- server_fleet
+|       |-- env
+|       |   `-- backend.tfvars
+|       |-- main.tf
+|       |-- modules
+|       |   |-- master
+|       |   |   |-- data.tf
+|       |   |   |-- iam.tf
+|       |   |   |-- master.tf
+|       |   |   |-- output.tf
+|       |   |   |-- provider.tf
+|       |   |   |-- ssm_agent.sh
+|       |   |   `-- variables.tf
+|       |   |-- networking
+|       |   |   |-- locals.tf
+|       |   |   |-- network.tf
+|       |   |   |-- output.tf
+|       |   |   |-- provider.tf
+|       |   |   |-- store.tf
+|       |   |   `-- variables.tf
+|       |   `-- servers
+|       |       |-- data.tf
+|       |       |-- locals.tf
+|       |       |-- outputs.tf
+|       |       |-- providers.tf
+|       |       |-- servers.tf
+|       |       `-- variables.tf
+|       |-- output.tf
+|       |-- providers.tf
+|       `-- variables.tf
 |-- argo_cd
 |   `-- vote_app.yaml
 |-- eks
@@ -186,7 +244,7 @@ $ tree
 |-- pod_scalling
 |   |-- hpa
 |   |   |-- helm
-|   |   |   `-- vote-app-chart
+|   |   |   `-- vote-app-chart-hpa
 |   |   |       |-- Chart.yaml
 |   |   |       |-- charts
 |   |   |       |-- templates
@@ -225,7 +283,7 @@ $ tree
 |   |   `-- prometheus.yaml
 |   `-- vpa
 |       |-- helm
-|       |   `-- vote-app-chart
+|       |   `-- vote-app-chart-vpa
 |       |       |-- Chart.yaml
 |       |       |-- charts
 |       |       |-- templates
@@ -280,9 +338,6 @@ $ tree
 |-- ssl-script.sh
 `-- terraform.tfstate
 
-79 directories, 120 files
-
-
-
+100 directories, 153 files
 ```
 
