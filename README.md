@@ -7,6 +7,15 @@
     - in this configuration, i used `terraform` to provission an ansible control host and a fleet of servers
     - in the ansible configurations, i have defined `roles` and `playbooks` to manage the fleet of servers from the control host
     - i have defind roles to `ping`, check commecetivity to `specific ports` and perform `apache` installations on the server fleets.
+    - to run any of the `playbooks`
+        ```
+        ansible-playbook -i inventory playbook_name.yaml
+        ```
+    - you can also run `adhoc` or `one liners` such as the ping command
+        ```
+        ansible -i inventory -m ping
+        ```
+    - ansible connects to the managed servers via ssh, therefore you may need to specify a keypair file, to authenticate connections from the control host to the servers  
 - [argo_cd](./argo_cd)
     - this manifest file defines how you can deploy the [vote-app application](https://github.com/michaelkedey/example-voting-app) via `argo_cd`, a continous delivery (cicd) tool.
         - [fork](https://github.com/michaelkedey/practice-devops-assignments/fork) the [practice-devops-assignmnets repo](https://github.com/michaelkedey/practice-devops-assignments/fork) and refer to [assignment_014](https://github.com/michaelkedey/practice-devops-assignments/tree/main/assignment_014) for how to set up your `argo_cd` server. 
