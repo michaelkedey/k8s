@@ -16,6 +16,7 @@
         ansible -i inventory -m ping
         ```
     - ansible connects to the managed servers via ssh, therefore you may need to specify a keypair file, to authenticate connections from the control host to the servers  
+    - the `inventory` file contains a list of `private ips` defined in yaml 
 - [argo_cd](./argo_cd)
     - this manifest file defines how you can deploy the [vote-app application](https://github.com/michaelkedey/example-voting-app) via `argo_cd`, a continous delivery (cicd) tool.
         - [fork](https://github.com/michaelkedey/practice-devops-assignments/fork) the [practice-devops-assignmnets repo](https://github.com/michaelkedey/practice-devops-assignments/fork) and refer to [assignment_014](https://github.com/michaelkedey/practice-devops-assignments/tree/main/assignment_014) for how to set up your `argo_cd` server. 
