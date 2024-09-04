@@ -1,0 +1,21 @@
+replicas: 2
+env: dev
+
+# Deployment configurations
+deploy:
+  cipher-tool:
+    name: cipher-tool
+    image: michaelkedey/cipher-tool:v2
+    port: 5000
+
+# Service configurations
+svc:
+  cipher-tool:
+    name: cipher-tool-svc
+    ports:
+      name: cipher-tool-svc
+      port: 80
+      targetPort: 5000
+    type: NodePort
+
+  

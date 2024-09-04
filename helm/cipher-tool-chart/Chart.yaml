@@ -1,0 +1,27 @@
+apiVersion: v2
+name: cipher-tool-v020
+version: 1.0.0
+description: Helm chart for deploying the cipher-tool application on Kubernetes.
+maintainers:
+  - name: Michael Kedey
+    email: privatemyk@gmail.com
+    url: 
+      https://github.com/michaelkedey
+      https://www.linkedin.com/in/michaelkedey
+home: https://github.com/michaelkedey/example-voting-app
+sources:
+  - https://github.com/michaelkedey/ciphers
+keywords:
+  - python
+  - cipher
+  - encryption
+  - decryption
+  - Kubernetes
+  - Helm
+# dependencies:
+#   - name: postgresql
+#     version: 9.x
+#     repository: https://charts.bitnami.com/bitnami
+#     condition: postgresql.enabled
+# appVersion: 2.1.3
+#icon: https://example.com/my-app-icon.png

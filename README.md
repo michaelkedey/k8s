@@ -1,6 +1,6 @@
 # k8s
 ### Overview
-**This repo contains kubernetes manifests for for deploying the [vote-app application](https://github.com/michaelkedey/example-voting-app)**
+**This repo contains kubernetes manifests for for deploying the [vote-app application](https://github.com/michaelkedey/example-voting-app) and [cipher-tool github](https://github.com/michaelkedey/ciphers) [cipher-tool dockerhub](https://hub.docker.com/r/michaelkedey/cipher-tool/tags) application**
 - [fork](https://github.com/michaelkedey/k8s/fork) and [clone](https://github.com/michaelkedey/k8s.git) the [k8s repo](https://github.com/michaelkedey/k8s/fork) to stay updated with any changes.   
 **This repo contains codes for :**
 - [ansible](./ansible/)
@@ -60,9 +60,10 @@
         terraform destroy --auto-approve
         ```
 - [helm](./helm/)
-    - this contains `helm` charts which completely define how to deploy the [vote-app application](https://github.com/michaelkedey/example-voting-app) via `helm`
-    - it has 2 charts [vote-app-char-1](./helm/vote-app-chart-1/) and [vote-app-char-2](./helm/vote-app-chart-2/)
-    - both charts contain similar configurations to deploy the [vote-app application](https://github.com/michaelkedey/example-voting-app)  
+    - this contains `helm` charts which completely define how to deploy both the [vote-app application](https://github.com/michaelkedey/example-voting-app) and [cipher-tool github](https://github.com/michaelkedey/ciphers) [cipher-tool dockerhub](https://hub.docker.com/r/michaelkedey/cipher-tool/tags) applications via `helm`
+    - it has 3 charts [vote-app-char-1](./helm/vote-app-chart-1/), [vote-app-char-2](./helm/vote-app-chart-2/) and [cipher-tool-chart](./helm/cipher-tool-chart/)
+    - both vote app charts contain similar configurations to deploy the [vote-app application](https://github.com/michaelkedey/example-voting-app)  
+    - the cipher-tool-chart contains manifests to deploy the [cipher-tool github](https://github.com/michaelkedey/ciphers) [cipher-tool dockerhub](https://hub.docker.com/r/michaelkedey/cipher-tool/tags) application
     - **happy helming**
 - [pod_scalling](./pod_scalling/)
     - here, I have deffined similar helm charts for the `vote-app` but with extra resources or features.

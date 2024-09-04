@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ include "app" . }}
+  name: {{ .Values.deploy.cipher-tool.name }}-{{ include "app" . }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deploy.cipher-tool.name }}-{{ include "app" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deploy.cipher-tool.name }}-{{ include "app" . }}
+    spec:
+      containers:
+        - image: {{ .Values.deploy.cipher-tool.image }}
+          name: {{ .Values.deploy.cipher-tool.name }}-{{ include "app" . }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}-{{ include "app" . }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{ include "app" . }}
+  name: {{ .Values.svc.cipher-tool.name }}-{{ include "app" . }}
+spec:
+  type: {{ .Values.svc.cipher-tool.type }}
+  ports:
+  - name: {{ .Values.svc.cipher-tool.name }}
+    port: {{ .Values.svc.cipher-tool.ports.port }}
+    targetPort: {{ .Values.svc.cipher-tool.ports.targetPort }}
+    nodePort: {{ .Values.svc.cipher-tool.ports.nodePort }}
+  selector:
+    app: {{ .Values.deploy.cipher-tool.name }}-{{ include "app" . }}
