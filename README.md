@@ -95,11 +95,11 @@
 ```plaintext
 $ tree
 .
-|-- README.md    
-|-- ansible      
+|-- README.md
+|-- ansible
 |   |-- inventory
 |   |-- playbooks
-|   |   |-- apache.yaml 
+|   |   |-- apache.yaml
 |   |   |-- apache2.yaml
 |   |   `-- networking.yaml
 |   |-- roles
@@ -107,11 +107,11 @@ $ tree
 |   |   |   |-- defaults
 |   |   |   |   `-- main.yaml
 |   |   |   |-- handlers
-|   |   |   |-- meta    
+|   |   |   |-- meta
 |   |   |   |   `-- main.yaml
-|   |   |   |-- tasks     
-|   |   |   |   `-- main.yaml    
-|   |   |   |-- templates        
+|   |   |   |-- tasks
+|   |   |   |   `-- main.yaml
+|   |   |   |-- templates
 |   |   |   |   `-- index.html.j2
 |   |   |   `-- vars
 |   |   `-- networking
@@ -183,6 +183,19 @@ $ tree
 |       `-- variables.tf
 |-- get_helm.sh
 |-- helm
+|   |-- cipher-tool-chart
+|   |   |-- Chart.yaml
+|   |   |-- charts
+|   |   |-- templates
+|   |   |   |-- _helpers.tpl
+|   |   |   `-- deploy_&_svc
+|   |   |       `-- deploy&svc.yaml
+|   |   |-- values
+|   |   |   |-- dev-values.yaml
+|   |   |   |-- prod-values.yaml
+|   |   |   |-- staging-values.yaml
+|   |   |   `-- values.yaml
+|   |   `-- values.yaml
 |   |-- vote-app-chart-1
 |   |   |-- Chart.yaml
 |   |   |-- charts
@@ -342,6 +355,7 @@ $ tree
 |   |-- output.tf
 |   |-- providers.tf
 |   |-- uploads
+|   |   |-- cipher-tool-v020-1.0.0.tgz
 |   |   |-- index.yaml
 |   |   |-- vote-app-chart-1-1.0.0.tgz
 |   |   `-- vote-app-chart-2-1.0.0.tgz
@@ -349,6 +363,6 @@ $ tree
 |-- ssl-script.sh
 `-- terraform.tfstate
 
-100 directories, 153 files
+105 directories, 162 files
 ```
 
