@@ -5,7 +5,7 @@ entries:
     created: "2024-09-04T14:23:11.4602794Z"
     description: Helm chart for deploying the cipher-tool application on Kubernetes.
     digest: d01fcd62a9869a4558dcb751cedf240bbafec7ed346e74c9ca89c09db9e9a304
-    home: https://github.com/michaelkedey/example-voting-app
+    home: https://github.com/michaelkedey/ciphers
     keywords:
     - python
     - cipher
