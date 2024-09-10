@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  cipher-tool:
+    image: michaelkedey/cipher-tool:v2
+    ports:
+      - "5000:5000"
