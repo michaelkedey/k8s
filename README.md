@@ -77,7 +77,7 @@
   - to add my `vote-app-repo` to your helm charts
     - add the repo
         ```
-        helm repo add s3-vote-app-repo https://helm-myoneansonlyhelmrepobucket.s3.us-east-1.amazonaws.com
+        helm repo add s3-repo https://helm-myoneansonlyhelmrepobucket.s3.us-east-1.amazonaws.com
         ```
     - update repo list
         ```
@@ -85,7 +85,11 @@
         ```
     - install the `vote-app` via the new repo you just added
         ```
-        helm install vote-app s3-vote-app-repo/vote-app-chart-1
+        helm install vote-app s3-repo/charts/vote-app-chart-1
+        ```
+    - install the `vote-app` via the new repo you just added
+        ```
+        helm install vote-app s3-repo/charts/cipher-tool-v020
         ```
     - **happy helming**
 
