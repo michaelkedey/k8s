@@ -85,11 +85,11 @@
         ```
     - install the `vote-app` via the new repo you just added
         ```
-        helm install vote-app s3-repo/charts/vote-app-chart-1
+        helm install vote-app s3-repo/vote-app-chart-1
         ```
     - install the `cipher-tool` via the new repo you just added
         ```
-        helm install vote-app s3-repo/charts/cipher-tool-v020
+        helm install vote-app s3-repo/cipher-tool-v020
         ```
     - **happy helming**
 
